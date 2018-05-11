@@ -14,9 +14,9 @@ struct pool_item
 typedef struct
 {
    s_pool_item *const storage;
+   s_pool_item *head;
    const size_t elem_size;
    const size_t size;
-   s_pool_item *head;
 } s_pool;
 
 #define KY_POOL_INITIALIZER(Storage)                    \
