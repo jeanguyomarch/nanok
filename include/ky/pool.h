@@ -35,5 +35,6 @@ void ky_pool_init(s_pool *pool);
 void *ky_pool_reserve(s_pool *pool);
 void ky_pool_release(s_pool *pool, void *data);
 void ky_pool_release_nth(s_pool *pool, size_t nth);
+size_t ky_pool_index_get(const s_pool *pool, const void *data);
 
 #endif /* ! KY_POOL_H__ */

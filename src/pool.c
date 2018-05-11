@@ -53,3 +53,16 @@ ky_pool_release_nth(s_pool *pool,
    void *const item = &(storage[nth * pool->elem_size]);
    ky_pool_release(pool, item);
 }
+
+size_t
+ky_pool_index_get(const s_pool *pool,
+                  const void *data)
+{
+   const uint8_t *const item = data;
+   const uint8_t *const storage = (const uint8_t *) pool->storage;
+
+   KY_ASSERT((item >= storage) &&
+             (item < storage + (pool->size * pool->elem_size)));
+
+   return (item - storage) / pool->elem_size;
+}

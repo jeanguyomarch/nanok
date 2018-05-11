@@ -31,6 +31,7 @@ test_pool_reserve(void)
      {
         data = ky_pool_reserve(&_pool);
         KTEST_ASSERT(data == &_storage[i]);
+        KTEST_ASSERT(ky_pool_index_get(&_pool, data) == i);
      }
 
    /* Release the last fetched element, then fill the pool back. Repeat a bit.
@@ -40,6 +41,7 @@ test_pool_reserve(void)
         ky_pool_release(&_pool, data);
         data = ky_pool_reserve(&_pool);
         KTEST_ASSERT(data == &_storage[7]);
+        KTEST_ASSERT(ky_pool_index_get(&_pool, data) == 7u);
      }
 
    /* Release the first element. Then reserve. We should get the first element
@@ -47,6 +49,7 @@ test_pool_reserve(void)
    ky_pool_release_nth(&_pool, 0u);
    data = ky_pool_reserve(&_pool);
    KTEST_ASSERT(data == &_storage[0]);
+   KTEST_ASSERT(ky_pool_index_get(&_pool, data) == 0u);
 }
 
 KTESTS(
