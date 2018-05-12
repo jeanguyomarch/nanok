@@ -32,9 +32,14 @@ ky_scheduler_add(s_task *task)
 void
 ky_scheduler_del(s_task *task)
 {
+   /* We can only delete elected tasks (tasks that stop themselves). So when
+    * this function is called, the task has already been removed from any waiting
+    * list.
+    *
+    * Just mark its state as being inactive (debug), and do nothing more.
+    */
    KY_ASSERT(task->status == KY_TASK_STATUS_ACTIVE);
    task->status = KY_TASK_STATUS_INACTIVE;
-   ky_inlist_del(KY_INLIST_GET(task));
 }
 
 s_task *
@@ -46,32 +51,41 @@ ky_scheduler_current_task_get(void)
 static s_task *
 _task_elect(s_list *tasks_list, s_task *task)
 {
-   s_task *const current_task = _current_task;
+   /* Pop from the list the next task to be elected. It shall be 'task' */
+   KY_ASSERT((void *)task == (void *)tasks_list->head.next);
    ky_list_del_head(tasks_list);
-   ky_list_add_tail(tasks_list, KY_INLIST_GET(current_task));
+
+   /* If the task that is currently elected (by which will change when this
+    * function returns) can be elected again, insert it as the bottom of the
+    * election list. That's a round robin. */
+   if (_current_task->status == KY_TASK_STATUS_ACTIVE)
+     {
+        ky_list_add_tail(tasks_list, KY_INLIST_GET(_current_task));
+     }
+
+   /* Proceed to the election */
    _current_task = task;
-   return current_task;
+   return _current_task;
 }
 
 s_task *
 ky_scheduler_schedule(void)
 {
-   s_inlist *l;
-
-   /* Elect the first urgent task, if any */
-   KY_LIST_FOREACH(&_urgent_tasks, l)
+   /* Elect the first pending urgent task, if any.
+    * Otherwise, elect the first pending normal task, if any.
+    * Otherwise, keep the current task elected by doing nothing. */
+   if (! ky_list_empty(&_urgent_tasks))
      {
-       s_task *const task = KY_INLIST_ENTRY(l, s_task);
-       return _task_elect(&_urgent_tasks, task);
+        s_task *const task = KY_LIST_FIRST_ENTRY_GET(&_urgent_tasks, s_task);
+        return _task_elect(&_urgent_tasks, task);
      }
-
-   /* Elect the first normal task */
-   KY_LIST_FOREACH(&_normal_tasks, l)
+   else if (likely(! ky_list_empty(&_normal_tasks)))
      {
-       s_task *const task = KY_INLIST_ENTRY(l, s_task);
-       return _task_elect(&_normal_tasks, task);
+        s_task *const task = KY_LIST_FIRST_ENTRY_GET(&_normal_tasks, s_task);
+        return _task_elect(&_normal_tasks, task);
      }
-
-   KY_ASSERT(false && "A task shall have been elected");
-   return NULL;
+   else
+     {
+        return _current_task;
+     }
 }

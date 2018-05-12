@@ -1,5 +1,5 @@
-#ifndef ARCH_PC_SYSCALL_H__
-#define ARCH_PC_SYSCALL_H__
+#ifndef PC_ARCH_SYSCALL_H__
+#define PC_ARCH_SYSCALL_H__
 
 #include <stdlib.h>
 
@@ -25,4 +25,4 @@ __syscall__ noreturn void stall(void)
    exit(EXIT_SUCCESS);
 }
 
-#endif /* ! ARCH_PC_SYSCALL_H__ */
+#endif /* ! PC_ARCH_SYSCALL_H__ */

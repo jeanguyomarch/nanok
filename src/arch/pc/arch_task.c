@@ -31,11 +31,9 @@ arch_task_setup(s_task *task)
    ucontext_t *const ctx = &(task->context.uctx);
 
    /* For the PC arch, we create our own stacks, of a much bigger size */
-   task->stack = _stack_new();
-   task->stack_size = _stack_size;
-
-   ctx->uc_stack.ss_sp = task->stack;
-   ctx->uc_stack.ss_size = task->stack_size;
+   task->context.stack = _stack_new();
+   ctx->uc_stack.ss_sp = task->context.stack;
+   ctx->uc_stack.ss_size = _stack_size;
 
    const int ret = getcontext(ctx);
    KY_ASSERT(ret == 0);
@@ -43,9 +41,10 @@ arch_task_setup(s_task *task)
 }
 
 KAPI void
-arch_task_cleanup(s_task *task)
+arch_task_cleanup(s_task *task __unused__)
 {
-   free(task->stack);
+   // FIXME
+   //free(task->context.stack);
 }
 
 KAPI void
@@ -65,6 +64,8 @@ _idle_main(void)
 s_task ky_idle_task =
 {
    .start = _idle_main,
+   .stack = NULL,
+   .stack_size = 0u,
    .status = KY_TASK_STATUS_INACTIVE,
    .priority = KY_TASK_PRIORITY_NORMAL,
 };

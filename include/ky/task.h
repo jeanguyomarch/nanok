@@ -16,6 +16,7 @@ typedef enum
 {
    KY_TASK_STATUS_INACTIVE = 0x1A,
    KY_TASK_STATUS_ACTIVE = 0x32,
+   KY_TASK_STATUS_WAITING = 0x32,
 } e_task_status;
 
 typedef enum
@@ -38,6 +39,7 @@ typedef struct
 
 } s_task;
 
+KAPI void ky_task_init(void);
 KAPI s_task *ky_task_add(f_task start, e_task_priority priority);
 KAPI void ky_task_del(s_task *task);
 KAPI void arch_task_setup(s_task *task);

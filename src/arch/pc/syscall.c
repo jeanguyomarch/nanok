@@ -25,9 +25,9 @@ __syscall_handler__ void
 ky_syscall_end(void)
 {
    s_task *const current_task = ky_scheduler_current_task_get();
-   ky_scheduler_del(current_task);
    ky_task_del(current_task);
 
    const s_task *const new_task = ky_scheduler_schedule();
+   KY_ASSERT(new_task != NULL);
    setcontext(&(new_task->context.uctx));
 }

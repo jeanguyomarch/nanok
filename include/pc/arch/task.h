@@ -6,6 +6,7 @@
 typedef struct
 {
    ucontext_t uctx;
+   void *stack;
 } s_task_context;
 
 #endif /* ! ARCH_TASK_H__ */

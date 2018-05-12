@@ -13,8 +13,14 @@ typedef uint8_t t_stack[STACK_SIZE];
 static t_stack _stacks[TASKS_COUNT];
 static s_pool _stack_pool = KY_POOL_INIT(_stacks);
 
+KAPI void
+ky_task_init(void)
+{
+   ky_pool_init(&_task_pool);
+   ky_pool_init(&_stack_pool);
+}
 
-s_task *
+KAPI s_task *
 ky_task_add(f_task start,
             e_task_priority priority)
 {
@@ -32,9 +38,10 @@ ky_task_add(f_task start,
    return task;
 }
 
-void
+KAPI void
 ky_task_del(s_task *task)
 {
+   arch_task_cleanup(task);
    ky_scheduler_del(task);
    ky_pool_release(&_stack_pool, task->stack);
    ky_pool_release(&_task_pool, task);
