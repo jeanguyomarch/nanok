@@ -6,11 +6,6 @@
 
 typedef struct pool_item s_pool_item;
 
-struct pool_item
-{
-   struct pool_item *next;
-};
-
 typedef struct
 {
    s_pool_item *const storage;

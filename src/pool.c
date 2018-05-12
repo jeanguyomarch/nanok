@@ -1,6 +1,12 @@
 #include "ky/pool.h"
 #include "ky/assert.h"
 
+struct pool_item
+{
+   struct pool_item *next;
+};
+
+
 void
 ky_pool_init(s_pool *pool)
 {
