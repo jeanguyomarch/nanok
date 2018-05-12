@@ -50,10 +50,12 @@ ktest_run(f_ktest test)
                                                                 \
   int main(void)                                                \
   {                                                             \
-    size_t nb_tests = sizeof(_tests) / sizeof(_tests[0]);       \
-    size_t failed_tests = 0u;                                   \
+    const size_t nb_tests = sizeof(_tests) / sizeof(_tests[0]); \
+    int failed_tests = 0;                                       \
     for (size_t i = 0u; i < nb_tests; i++)                      \
-    {  failed_tests += ktest_run(_tests[i]) ? 0u : 1u; }        \
+    { failed_tests += ktest_run(_tests[i]) ? 0 : 1; }           \
+    printf("--   PASSED: %i / %zu\n",                           \
+          (int) nb_tests - failed_tests, nb_tests);             \
     return failed_tests;                                        \
   }
 

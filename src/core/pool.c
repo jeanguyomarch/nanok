@@ -70,5 +70,5 @@ ky_pool_index_get(const s_pool *pool,
    KY_ASSERT((item >= storage) &&
              (item < storage + (pool->size * pool->elem_size)));
 
-   return (item - storage) / pool->elem_size;
+   return (size_t)(item - storage) / pool->elem_size;
 }
