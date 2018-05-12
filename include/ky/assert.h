@@ -8,7 +8,7 @@ noreturn void ky_assert_fail(const char *filename, unsigned long line, const cha
 
 #define KY_ASSERT(Condition_)                                   \
   do {                                                          \
-    if (! (Condition_)) {                                       \
+    if (unlikely(! (Condition_))) {                             \
        ky_assert_fail(__FILE__, __LINE__ + 0UL, # Condition_);  \
     }                                                           \
   } while (0)
