@@ -3,7 +3,6 @@
 
 #include "ky/list.h"
 #include "ky/compiler.h"
-#include "ky/object.h"
 #include "arch/task.h"
 
 #include <stdbool.h>
@@ -16,7 +15,7 @@ typedef enum
 {
    KY_TASK_STATUS_INACTIVE = 0x1A,
    KY_TASK_STATUS_ACTIVE = 0x32,
-   KY_TASK_STATUS_WAITING = 0x32,
+   KY_TASK_STATUS_WAITING = 0x2C,
 } e_task_status;
 
 typedef enum

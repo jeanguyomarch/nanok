@@ -28,4 +28,6 @@
 
 #define KAPI __attribute__ ((visibility("default")))
 
+#define ARRAY_SIZE(Arr) (sizeof(Arr) / sizeof((Arr)[0]))
+
 #endif /* ! KY_COMPILER_H__ */

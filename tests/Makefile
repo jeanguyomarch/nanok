@@ -7,10 +7,9 @@ ky ?= $(builddir)/ky.a
 TESTS := pool
 TESTS += list
 TESTS += run
+TESTS += await
 
 all: $(TESTS)
-
-Q=
 
 define gen-test
 

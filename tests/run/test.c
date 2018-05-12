@@ -1,43 +1,62 @@
+#include "kstub/kstub.h"
+
 #include "ky/task.h"
 #include "ky/init.h"
 #include "ky/syscall.h"
 
-#include <stdlib.h>
-#include <stdio.h>
-#include <unistd.h>
+KSTUB_ASSERT_HANDLER();
 
-KAPI noreturn void
-ky_assert_fail(const char *filename,
-               unsigned long line,
-               const char *failure)
+typedef enum
 {
-   fprintf(stderr, "[%s:%lu] ASSERTION FAILED: %s\n",
-           filename, line, failure);
-   exit(EXIT_FAILURE);
-}
+   EVENT_TASK_1,
+   EVENT_TASK_2_BEFORE_YIELD,
+   EVENT_TASK_2_AFTER_YIELD,
+   EVENT_TASK_3_BEFORE_YIELD_0,
+   EVENT_TASK_3_BEFORE_YIELD_1,
+   EVENT_TASK_3_AFTER_YIELD_1,
+} e_event;
+
+static const e_event _expected_events[] =
+{
+   EVENT_TASK_1,
+   EVENT_TASK_2_BEFORE_YIELD,
+   EVENT_TASK_3_BEFORE_YIELD_0,
+   EVENT_TASK_2_AFTER_YIELD,
+   EVENT_TASK_3_BEFORE_YIELD_1,
+   EVENT_TASK_3_AFTER_YIELD_1,
+};
+
+static e_event _events[ARRAY_SIZE(_expected_events)];
+static size_t _index = 0u;
+
+#define EVENT(Evt) \
+   do { \
+      printf("%s: %s\n", __func__, #Evt); \
+      _events[_index++] = (Evt); \
+   } while (0)
 
 static void
 _task1(void)
 {
-   printf("This is task 1. I will return and die.\n");
+   EVENT(EVENT_TASK_1);
 }
 
 static void
 _task2(void)
 {
-   printf("This is task 2. I should have started after 1. I will yield now\n");
+   EVENT(EVENT_TASK_2_BEFORE_YIELD);
    yield();
-   printf("This is task 2. I resumed after yield\n");
+   EVENT(EVENT_TASK_2_AFTER_YIELD);
 }
 
 static void
 _task3(void)
 {
-   printf("This is task 3. I should have started after 2\n");
+   EVENT(EVENT_TASK_3_BEFORE_YIELD_0);
    yield();
-   printf("This is task 3. Task2 should have died now. I will yield\n");
+   EVENT(EVENT_TASK_3_BEFORE_YIELD_1);
    yield();
-   printf("This is task 3. I'm done yielding. I'll stall\n");
+   EVENT(EVENT_TASK_3_AFTER_YIELD_1);
    stall();
 }
 

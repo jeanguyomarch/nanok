@@ -21,7 +21,7 @@ ky_scheduler_init(void)
 void
 ky_scheduler_add(s_task *task)
 {
-   KY_ASSERT(task->status == KY_TASK_STATUS_INACTIVE);
+   KY_ASSERT(task->status != KY_TASK_STATUS_ACTIVE);
    task->status = KY_TASK_STATUS_ACTIVE;
 
    s_list *const list = (task->priority == KY_TASK_PRIORITY_NORMAL)
