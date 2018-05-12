@@ -1,7 +1,41 @@
 #include "ky/task.h"
+#include "ky/scheduler.h"
+#include "ky/pool.h"
+#include "ky/assert.h"
 
-t_object_id
-ky_task_id_get(const s_task *task)
+#define TASKS_COUNT 16u
+static s_task _tasks[TASKS_COUNT];
+static s_pool _task_pool = KY_POOL_INIT(_tasks);
+
+#define STACK_SIZE 1024u
+typedef uint8_t t_stack[STACK_SIZE];
+
+static t_stack _stacks[TASKS_COUNT];
+static s_pool _stack_pool = KY_POOL_INIT(_stacks);
+
+
+s_task *
+ky_task_add(f_task start,
+            e_task_priority priority)
 {
-   return (t_object_id)(task - ky_tasks);
+   s_task *const task = ky_pool_reserve(&_task_pool);
+
+   task->start = start;
+   task->stack = ky_pool_reserve(&_stack_pool);
+   task->stack_size = STACK_SIZE;
+   task->priority = priority;
+   task->status = KY_TASK_STATUS_INACTIVE;
+
+   arch_task_setup(task);
+   ky_scheduler_add(task);
+
+   return task;
+}
+
+void
+ky_task_del(s_task *task)
+{
+   ky_scheduler_del(task);
+   ky_pool_release(&_stack_pool, task->stack);
+   ky_pool_release(&_task_pool, task);
 }

@@ -7,7 +7,7 @@ struct pool_item
 };
 
 
-void
+KAPI void
 ky_pool_init(s_pool *pool)
 {
    uint8_t *const storage = (uint8_t *)pool->storage;
@@ -25,7 +25,7 @@ ky_pool_init(s_pool *pool)
    next->next = NULL;
 }
 
-void *
+KAPI void *
 ky_pool_reserve(s_pool *pool)
 {
    s_pool_item *const old_head = pool->head;
@@ -37,7 +37,7 @@ ky_pool_reserve(s_pool *pool)
    return old_head;
 }
 
-void
+KAPI void
 ky_pool_release(s_pool *pool,
                 void *data)
 {
@@ -51,7 +51,7 @@ ky_pool_release(s_pool *pool,
    item->next = old_head;
 }
 
-void
+KAPI void
 ky_pool_release_nth(s_pool *pool,
                     size_t nth)
 {
@@ -60,7 +60,7 @@ ky_pool_release_nth(s_pool *pool,
    ky_pool_release(pool, item);
 }
 
-size_t
+KAPI size_t
 ky_pool_index_get(const s_pool *pool,
                   const void *data)
 {

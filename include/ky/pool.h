@@ -1,6 +1,7 @@
 #ifndef KY_POOL_H__
 #define KY_POOL_H__
 
+#include "ky/compiler.h"
 #include <stddef.h>
 #include <stdint.h>
 
@@ -14,7 +15,7 @@ typedef struct
    const size_t size;
 } s_pool;
 
-#define KY_POOL_INITIALIZER(Storage)                    \
+#define KY_POOL_INIT(Storage)                           \
   {                                                     \
      .storage = (s_pool_item *) Storage,                \
      .size = sizeof(Storage) / sizeof(Storage[0]),      \
@@ -26,10 +27,10 @@ typedef struct
       "Pool element size must be greater or than the size of a pointer")
 
 
-void ky_pool_init(s_pool *pool);
-void *ky_pool_reserve(s_pool *pool);
-void ky_pool_release(s_pool *pool, void *data);
-void ky_pool_release_nth(s_pool *pool, size_t nth);
-size_t ky_pool_index_get(const s_pool *pool, const void *data);
+KAPI void ky_pool_init(s_pool *pool);
+KAPI void *ky_pool_reserve(s_pool *pool);
+KAPI void ky_pool_release(s_pool *pool, void *data);
+KAPI void ky_pool_release_nth(s_pool *pool, size_t nth);
+KAPI size_t ky_pool_index_get(const s_pool *pool, const void *data);
 
 #endif /* ! KY_POOL_H__ */

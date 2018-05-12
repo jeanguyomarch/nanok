@@ -1,4 +1,3 @@
-
 srcdir ?= .
 builddir ?= .
 ky ?= $(builddir)/ky.a
@@ -10,7 +9,7 @@ include make/common.mk
 define gen-compile-obj
 $$(builddir)/$(1): $$(srcdir)/$(patsubst %.o,%.c,$(1))
 	$(call info-cc,$$<)
-	$$(Q)$$(CC) -c $$< -o $$@ $$(CC_WARNINGS) $$(C_STANDARD) -Iinclude
+	$$(Q)$$(CC) $$(COMMON_CFLAGS) -c $$< -o $$@
 	$$(Q)$$(AR) Drcs $$(ky) $$@
 
 endef

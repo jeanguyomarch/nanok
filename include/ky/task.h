@@ -4,16 +4,17 @@
 #include "ky/list.h"
 #include "ky/compiler.h"
 #include "ky/object.h"
+#include "arch/task.h"
 
 #include <stdbool.h>
 #include <stdint.h>
 #include <stddef.h>
 
-typedef void *(*f_task)(void *data);
+typedef void (*f_task)(void);
 
 typedef enum
 {
-   KY_TASK_STATUS_PAUSED = 0x1A,
+   KY_TASK_STATUS_INACTIVE = 0x1A,
    KY_TASK_STATUS_ACTIVE = 0x32,
 } e_task_status;
 
@@ -27,23 +28,22 @@ typedef struct
 {
    KY_INLIST;
 
-   const char *const name;
-   const f_task start;
+   s_task_context context;
 
+   f_task start;
    uint8_t *stack;
-   const size_t stack_size;
-
+   size_t stack_size;
    e_task_status status;
-   const e_task_priority priority;
+   e_task_priority priority;
 
 } s_task;
 
-t_object_id ky_task_id_get(const s_task *task);
+KAPI s_task *ky_task_add(f_task start, e_task_priority priority);
+KAPI void ky_task_del(s_task *task);
+KAPI void arch_task_setup(s_task *task);
+KAPI void arch_task_cleanup(s_task *task);
 
-extern s_task ky_tasks[];
-extern const size_t ky_tasks_count;
-
-
+KAPI extern s_task ky_idle_task;
 
 
 #endif /* ! KY_TASK_H__ */

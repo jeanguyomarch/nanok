@@ -3,7 +3,7 @@
 #include "ky/pool.h"
 
 static uintptr_t _storage[8];
-static s_pool _pool = KY_POOL_INITIALIZER(_storage);
+static s_pool _pool = KY_POOL_INIT(_storage);
 
 static void
 test_pool_init(void)

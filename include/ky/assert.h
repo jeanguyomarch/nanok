@@ -4,7 +4,7 @@
 #include "ky/compiler.h"
 #include <stdnoreturn.h>
 
-noreturn void ky_assert_fail(const char *filename, unsigned long line, const char *failure);
+KAPI noreturn void ky_assert_fail(const char *filename, unsigned long line, const char *failure);
 
 #define KY_ASSERT(Condition_)                                   \
   do {                                                          \

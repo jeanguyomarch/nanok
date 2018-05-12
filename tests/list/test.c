@@ -71,6 +71,20 @@ test_list_add_tail_del_head(void)
    ky_list_add_tail(&_list, KY_INLIST_GET(&_items[5]));
    const size_t expected_1[] = { 7u, 2u, 5u, };
    _list_content_expect(3u, expected_1);
+
+   /* Remove all three elements. We shall end with zero element */
+   ky_list_del_head(&_list);
+   ky_list_del_head(&_list);
+   ky_list_del_head(&_list);
+
+   /* Add some elements back:
+    * 7 -> 6 -> 4
+    */
+   ky_list_add_tail(&_list, KY_INLIST_GET(&_items[7]));
+   ky_list_add_tail(&_list, KY_INLIST_GET(&_items[6]));
+   ky_list_add_tail(&_list, KY_INLIST_GET(&_items[4]));
+   const size_t expected_2[] = { 7u, 6u, 4u, };
+   _list_content_expect(3u, expected_2);
 }
 
 KTESTS(

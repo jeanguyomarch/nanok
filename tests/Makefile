@@ -6,14 +6,17 @@ ky ?= $(builddir)/ky.a
 
 TESTS := pool
 TESTS += list
+TESTS += run
 
 all: $(TESTS)
+
+Q=
 
 define gen-test
 
 $$(builddir)/tests/$(1): tests/$(1)/test.c $$(ky) tests/include/ktest/ktest.h | $$(builddir)/tests
 	$(call info-cc,$$<)
-	$$(Q)$$(CC) $$^ -o $$@ $$(CC_WARNINGS) $$(C_STANDARD) -Iinclude -Itests/include
+	$$(Q)$$(CC) $$(COMMON_CFLAGS) $$^ -o $$@ -Itests/include
 
 $(1): $$(builddir)/tests/$(1)
 

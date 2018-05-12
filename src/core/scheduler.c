@@ -2,19 +2,26 @@
 #include "ky/scheduler.h"
 #include "ky/task.h"
 #include "ky/list.h"
+#include "ky/assert.h"
 
-static t_object_id _current_task_id = KY_OBJECT_ID_INVALID;
+static s_task *_current_task = NULL;
 
 static s_list _normal_tasks = KY_LIST_INIT(_normal_tasks);
 static s_list _urgent_tasks = KY_LIST_INIT(_urgent_tasks);
 
 void
-ky_scheduler_wake(t_object_id task_id)
+ky_scheduler_init(void)
 {
-   KY_ASSERT(task_id < ky_tasks_count);
-   s_task *const task = &(ky_tasks[task_id]);
+   s_task *const idle = &ky_idle_task;
+   arch_task_setup(idle);
+   ky_scheduler_add(idle);
+   _current_task = idle;
+}
 
-   KY_ASSERT(task->status == KY_TASK_STATUS_PAUSED);
+void
+ky_scheduler_add(s_task *task)
+{
+   KY_ASSERT(task->status == KY_TASK_STATUS_INACTIVE);
    task->status = KY_TASK_STATUS_ACTIVE;
 
    s_list *const list = (task->priority == KY_TASK_PRIORITY_NORMAL)
@@ -23,30 +30,31 @@ ky_scheduler_wake(t_object_id task_id)
 }
 
 void
-ky_scheduler_pause(t_object_id task_id)
+ky_scheduler_del(s_task *task)
 {
-   KY_ASSERT(task_id < ky_tasks_count);
-   s_task *const task = &(ky_tasks[task_id]);
-
    KY_ASSERT(task->status == KY_TASK_STATUS_ACTIVE);
-   task->status = KY_TASK_STATUS_PAUSED;
+   task->status = KY_TASK_STATUS_INACTIVE;
+   ky_inlist_del(KY_INLIST_GET(task));
 }
 
-t_object_id
-ky_scheduler_current_task_id_get(void)
+s_task *
+ky_scheduler_current_task_get(void)
 {
-  return _current_task_id;
+  return _current_task;
 }
 
-static t_object_id
-_task_elect(s_list *tasks_list, const s_task *task)
+static s_task *
+_task_elect(s_list *tasks_list, s_task *task)
 {
+   s_task *const current_task = _current_task;
    ky_list_del_head(tasks_list);
-   return ky_task_id_get(task);
+   ky_list_add_tail(tasks_list, KY_INLIST_GET(current_task));
+   _current_task = task;
+   return current_task;
 }
 
-t_object_id
-ky_scheduler_elect(void)
+s_task *
+ky_scheduler_schedule(void)
 {
    s_inlist *l;
 
@@ -64,5 +72,6 @@ ky_scheduler_elect(void)
        return _task_elect(&_normal_tasks, task);
      }
 
-   return KY_OBJECT_ID_INVALID;
+   KY_ASSERT(false && "A task shall have been elected");
+   return NULL;
 }
