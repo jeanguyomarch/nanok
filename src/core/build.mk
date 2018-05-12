@@ -1,5 +1,5 @@
-objs := event.o
-objs += init.o
-objs += pool.o
-objs += scheduler.o
-objs += task.o
+objs := ky_event.o
+objs += ky_init.o
+objs += ky_pool.o
+objs += ky_scheduler.o
+objs += ky_task.o
