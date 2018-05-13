@@ -13,6 +13,7 @@ KAPI s_event *ky_event_repeated_new(void);
 KAPI void ky_event_free(s_event *event);
 KAPI void ky_event_trigger(s_event *event);
 KAPI void ky_event_await(s_event *event, s_task *task);
+KAPI void ky_event_bind(s_event *event, s_task *task);
 
 static inline void
 ky_await(s_event *event)

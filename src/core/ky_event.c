@@ -59,7 +59,14 @@ KAPI void
 ky_event_await(s_event *event,
                s_task *task)
 {
-   event->task = task;
+   ky_event_bind(event, task);
    task->status = KY_TASK_STATUS_WAITING;
    ky_yield();
+}
+
+KAPI void
+ky_event_bind(s_event *event,
+              s_task *task)
+{
+   event->task = task;
 }
