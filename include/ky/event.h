@@ -15,7 +15,7 @@ KAPI void ky_event_trigger(s_event *event);
 KAPI void ky_event_await(s_event *event, s_task *task);
 
 static inline void
-await(s_event *event)
+ky_await(s_event *event)
 {
    ky_event_await(event, ky_scheduler_current_task_get());
 }

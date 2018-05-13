@@ -14,7 +14,7 @@ _runner(f_task task_start)
 
    /* The functions will always end with the 'end' syscall, which will properly
     * destroy the task */
-   end();
+   ky_terminate();
 }
 
 static const size_t _stack_size = 8u * (1u << 20u); /* 8 MiB */
@@ -57,7 +57,7 @@ _idle_main(void)
 {
    for (;;)
      {
-        yield();
+        ky_yield();
      }
 }
 

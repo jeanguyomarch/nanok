@@ -3,24 +3,24 @@
 
 #include <stdlib.h>
 
-__syscall__ void yield(void)
+__syscall__ void ky_yield(void)
 {
    ky_syscall_yield();
 }
 
-__syscall__ noreturn void run(void)
+__syscall__ noreturn void ky_run(void)
 {
    ky_syscall_run();
    __builtin_unreachable();
 }
 
-__syscall__ noreturn void end(void)
+__syscall__ noreturn void ky_terminate(void)
 {
-   ky_syscall_end();
+   ky_syscall_terminate();
    __builtin_unreachable();
 }
 
-__syscall__ noreturn void stall(void)
+__syscall__ noreturn void ky_stall(void)
 {
    exit(EXIT_SUCCESS);
 }

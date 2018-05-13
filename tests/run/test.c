@@ -45,7 +45,7 @@ static void
 _task2(void)
 {
    EVENT(EVENT_TASK_2_BEFORE_YIELD);
-   yield();
+   ky_yield();
    EVENT(EVENT_TASK_2_AFTER_YIELD);
 }
 
@@ -53,11 +53,11 @@ static void
 _task3(void)
 {
    EVENT(EVENT_TASK_3_BEFORE_YIELD_0);
-   yield();
+   ky_yield();
    EVENT(EVENT_TASK_3_BEFORE_YIELD_1);
-   yield();
+   ky_yield();
    EVENT(EVENT_TASK_3_AFTER_YIELD_1);
-   stall();
+   ky_stall();
 }
 
 
@@ -69,7 +69,7 @@ main(void)
    ky_task_add(_task2, KY_TASK_PRIORITY_NORMAL);
    ky_task_add(_task3, KY_TASK_PRIORITY_NORMAL);
 
-   run();
+   ky_run();
 
    return EXIT_SUCCESS;
 }

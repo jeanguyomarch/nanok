@@ -5,6 +5,6 @@
  * implementations as "noreturn". Noreturn is a wished behavior on real
  * hardware, but for the PC simulation, absolutely NOT! */
 #define __syscall__ static inline
-#define __syscall_handler__
+#define __syscall_handler__ KAPI
 
 #endif /* ! PC_ARCH_COMPILER__ */

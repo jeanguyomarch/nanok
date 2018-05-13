@@ -24,13 +24,13 @@ _producer(void)
    ky_event_trigger(_prod_to_2);
 
    MSG("Done. I'll now wait for reader 2 to end");
-   await(_reader_2_ended);
+   ky_await(_reader_2_ended);
 
    MSG("Reader 2 shall be dead. I'll send event 1 a second time");
    ky_event_trigger(_prod_to_1);
 
    MSG("Done. I'll wait for reader 1 to end");
-   await(_reader_1_ended);
+   ky_await(_reader_1_ended);
 
    MSG("I'll send a termination signal, then end");
    ky_event_trigger(_prod_end_evt);
@@ -40,10 +40,10 @@ static void
 _reader_1(void)
 {
    MSG("Awaiting event 1");
-   await(_prod_to_1);
+   ky_await(_prod_to_1);
 
    MSG("I received event 1. Waiting again");
-   await(_prod_to_1);
+   ky_await(_prod_to_1);
 
    MSG("Second event received. Will end now.");
    ky_event_trigger(_reader_1_ended);
@@ -53,7 +53,7 @@ static void
 _reader_2(void)
 {
    MSG("Awaiting event 2");
-   await(_prod_to_2);
+   ky_await(_prod_to_2);
    MSG("Event 2 received. Will end now");
    ky_event_trigger(_reader_2_ended);
 }
@@ -62,10 +62,10 @@ static void
 _sentinel(void)
 {
    MSG("Awaiting for end event");
-   await(_prod_end_evt);
+   ky_await(_prod_end_evt);
 
    MSG("End event received. Stalling...");
-   stall();
+   ky_stall();
 }
 
 
@@ -85,7 +85,7 @@ main(void)
    ky_task_add(_producer, KY_TASK_PRIORITY_NORMAL);
    ky_task_add(_sentinel, KY_TASK_PRIORITY_NORMAL);
 
-   run();
+   ky_run();
 
    return EXIT_SUCCESS;
 }

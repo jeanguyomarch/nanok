@@ -61,5 +61,5 @@ ky_event_await(s_event *event,
 {
    event->task = task;
    task->status = KY_TASK_STATUS_WAITING;
-   yield();
+   ky_yield();
 }

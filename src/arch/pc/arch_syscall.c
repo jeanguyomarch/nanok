@@ -22,7 +22,7 @@ ky_syscall_yield(void)
 }
 
 __syscall_handler__ void
-ky_syscall_end(void)
+ky_syscall_terminate(void)
 {
    s_task *const current_task = ky_scheduler_current_task_get();
    ky_task_del(current_task);
