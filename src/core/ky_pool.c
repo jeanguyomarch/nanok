@@ -13,7 +13,7 @@ ky_pool_init(s_pool *pool)
    uint8_t *const storage = (uint8_t *)pool->storage;
 
    s_pool_item *prev = pool->storage;
-   s_pool_item *next;
+   s_pool_item *next = prev; /* next is initialized to please the compiler */
 
    pool->head = prev;
    for (size_t i = 1u; i < pool->size; ++i)

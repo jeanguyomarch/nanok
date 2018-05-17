@@ -18,13 +18,17 @@ typedef struct
 #define KY_POOL_INIT(Storage)                           \
   {                                                     \
      .storage = (s_pool_item *) Storage,                \
+     .head = (s_pool_item *) Storage,                   \
      .size = sizeof(Storage) / sizeof(Storage[0]),      \
      .elem_size = sizeof(Storage[0]),                   \
-     .head = (s_pool_item *) Storage,                   \
   };                                                    \
   _Static_assert(                                       \
       sizeof(Storage[0]) >= sizeof(void *),             \
-      "Pool element size must be greater or than the size of a pointer")
+      "Pool element size must be greater or than the size of a pointer"); \
+  _Static_assert(                                       \
+      sizeof(Storage) > sizeof(Storage[0]),             \
+      "A pool must contain more than one element")
+
 
 
 KAPI void ky_pool_init(s_pool *pool);

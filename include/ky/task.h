@@ -4,6 +4,7 @@
 #include "ky/list.h"
 #include "ky/compiler.h"
 #include "arch/task.h"
+#include "arch/types.h"
 
 #include <stdbool.h>
 #include <stdint.h>
@@ -31,7 +32,7 @@ typedef struct
    s_task_context context;
 
    f_task start;
-   uint8_t *stack;
+   t_stack_alignment *stack;
    size_t stack_size;
    e_task_status status;
    e_task_priority priority;

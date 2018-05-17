@@ -1,27 +1,45 @@
 srcdir ?= .
 builddir ?= .
-ky ?= $(builddir)/ky.a
 
 include make/compiler.mk
 include make/common.mk
 
-
-define gen-compile-obj
-$$(builddir)/$(1): $$(srcdir)/$(patsubst %.o,%.c,$(1))
-	$(call info-cc,$$<)
-	$$(Q)$$(CC) $$(COMMON_CFLAGS) -c $$< -o $$@
-	$$(Q)$$(AR) Drcs $$(ky) $$@
-
-endef
-
 include $(srcdir)/build.mk
 
-.PHONY: all $(SUBDIRS)
+objs := $(foreach src,$(sources),$(builddir)/$(srcdir)/$(src:.c=.o))
+deps := $(objs:.o=.d)
+outdir := $(builddir)/$(srcdir)
+run-ar = $(AR) TDrcs $(outdir)/_$(notdir $(srcdir)).o $(1)
 
-all: $(SUBDIRS) $(foreach obj,$(objs),$(builddir)/$(obj) )
+subobjs := $(foreach subdir,$(SUBDIRS),$(outdir)/$(subdir)/_$(notdir $(subdir)).o)
 
-$(foreach obj,$(objs),$(eval $(call gen-compile-obj,$(obj))))
+all: $(SUBDIRS) $(objs)
+ifneq ($(SUBDIRS),)
+	@$(call run-ar,$(subobjs))
+endif
+
+$(outdir)/%.d: $(srcdir)/%.c
+	@mkdir -p $(dir $@)
+	@$(RM) $@
+	@$(CC) -MM $(CPPFLAGS) $< > $@.$$$$; \
+         sed 's,\($*\)\.o[ :]*,$(builddir)/$(srcdir)/\1.o $@ : ,g' < $@.$$$$ > $@; \
+         rm -f $@.$$$$
+
+-include $(deps)
+
+$(outdir)/%.o: $(srcdir)/%.c
+	$(call info-cc,$<)
+	$(Q)$(CC) $(COMMON_CFLAGS) -c $< -o $@
+	@$(call run-ar,$@)
+
+$(outdir)/%.o: $(srcdir)/%.S
+	@mkdir -p $(dir $@)
+	$(call info-as,$<)
+	$(Q)$(CC) -c $< -o $@
+	@$(call run-ar,$@)
+
 
 $(SUBDIRS):
-	@mkdir -p $(builddir)/$(srcdir)/$@
-	@$(MAKE) -f make/build.mk srcdir=$(srcdir)/$@ builddir=$(builddir)/$(srcdir)/$@ ky=$(ky)
+	@$(MAKE) -f make/build.mk srcdir=$(srcdir)/$@ builddir=$(builddir)
+
+.PHONY: all $(SUBDIRS)

@@ -1,5 +1,5 @@
-objs := ky_event.o
-objs += ky_init.o
-objs += ky_pool.o
-objs += ky_scheduler.o
-objs += ky_task.o
+sources := ky_event.c
+sources += ky_init.c
+sources += ky_pool.c
+sources += ky_scheduler.c
+sources += ky_task.c
