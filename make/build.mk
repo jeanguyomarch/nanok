@@ -6,7 +6,7 @@ include make/common.mk
 
 include $(srcdir)/build.mk
 
-objs := $(foreach src,$(sources),$(builddir)/$(srcdir)/$(src:.c=.o))
+objs := $(foreach src,$(sources),$(builddir)/$(srcdir)/$(src:.c=.o)) # XXX
 deps := $(objs:.o=.d)
 outdir := $(builddir)/$(srcdir)
 run-ar = $(AR) TDrcs $(outdir)/_$(notdir $(srcdir)).o $(1)

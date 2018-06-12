@@ -2,8 +2,26 @@
 #include "ky/task.h"
 #include "ky/scheduler.h"
 #include "ky/assert.h"
+#include "arch/exception_frame.h"
 
 #include <stm32f4xx_hal.h>
+
+void SysTick_Handler(void) { HAL_IncTick(); }
+
+
+#define __syscall_handler__ __attribute__((naked)) noreturn
+
+__attribute__((always_inline)) static inline uint32_t
+_lr_get(void)
+{
+   register uint32_t result;
+   asm volatile(
+      "mov %0, lr\n"
+      : "=r"(result)
+   );
+   return result;
+}
+
 
 __attribute__((always_inline)) noreturn static inline void
 _exception_return(uint32_t exc_return)
@@ -17,19 +35,8 @@ _exception_return(uint32_t exc_return)
    __builtin_unreachable();
 }
 
-__attribute__((always_inline)) static inline uint32_t
-_lr_get(void)
-{
-   register uint32_t result;
-   asm volatile(
-      "MOV %0, lr\n"
-      : "=r"(result)
-   );
-   return result;
-}
-
-__syscall_handler__ void
-ky_syscall_run(void)
+static __syscall_handler__ void
+_syscall_run(void)
 {
    s_task *const first_task = ky_scheduler_schedule();
    KY_ASSERT(first_task != NULL);
@@ -40,8 +47,9 @@ ky_syscall_run(void)
    _exception_return(ctx->exc_return);
 }
 
-__syscall_handler__ void
-ky_syscall_yield(void)
+
+static __syscall_handler__ void
+_syscall_yield(void)
 {
    s_task *const current_task = ky_scheduler_current_task_get();
    s_task *const elected_task = ky_scheduler_schedule();
@@ -50,14 +58,13 @@ ky_syscall_yield(void)
    const s_task_context *const next_context = &(elected_task->context);
 
    prev_context->psp = __get_PSP();
-   prev_context->exc_return = _lr_get();
 
    __set_PSP(next_context->psp);
    _exception_return(next_context->exc_return);
 }
 
-__syscall_handler__ void
-ky_syscall_terminate(void)
+static __syscall_handler__ void
+_syscall_terminate(void)
 {
    s_task *const current_task = ky_scheduler_current_task_get();
    ky_task_del(current_task);
@@ -70,3 +77,26 @@ ky_syscall_terminate(void)
    _exception_return(new_context->exc_return);
 }
 
+__attribute__((naked)) noreturn void
+SVC_Handler(void)
+{
+   register uint32_t psp;
+   asm volatile(
+      "tst lr, #4\n"
+      "ite eq\n"
+      "mrseq %0, msp\n"
+      "mrsne %0, psp\n"
+      : "=r"(psp)
+   );
+
+   const s_exception_frame *const frame = (s_exception_frame *)psp;
+   const uint8_t svc_id = ((const uint8_t *)frame->pc)[-2]; /* Thumb */
+
+   static void (*const syscall[])(void) = {
+      [0] = _syscall_yield,
+      [1] = _syscall_run,
+      [2] = _syscall_terminate,
+   };
+   KY_ASSERT(svc_id < ARRAY_SIZE(syscall));
+   syscall[svc_id]();
+}

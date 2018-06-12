@@ -10,6 +10,12 @@
 #include <stdint.h>
 #include <stddef.h>
 
+#define KY_STACK_DEFINE(StackName, StackSize)                           \
+  _Static_assert((StackSize) % sizeof(t_stack_alignment) == 0,          \
+                 "Stacks must be aligned on t_stack_alignment");        \
+  static _Alignas(t_stack_alignment)                                    \
+  t_stack_alignment StackName[(StackSize) / sizeof(t_stack_alignment)]
+
 typedef void (*f_task)(void);
 
 typedef enum

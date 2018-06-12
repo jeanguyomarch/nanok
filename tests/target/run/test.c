@@ -15,16 +15,28 @@ ky_assert_fail(const char *filename __unused__,
    for (;;) continue;
 }
 
+static volatile uint32_t _counter = UINT32_C(0);
+
 static void
 _task1(void)
 {
-   ky_log_puts("This is task1");
+   //  ky_log_puts("This is task1");
+   for (;;) {
+      _counter += UINT32_C(1);
+      ky_yield();
+   }
 }
+
 
 static void
 _task2(void)
 {
-   ky_log_puts("This is task2");
+   //   ky_log_puts("This is task2");
+   for (;;) {
+      if (_counter % 200000 == 0)
+        BSP_LED_Toggle(LED3);
+      ky_yield();
+   }
 }
 
 void
@@ -34,19 +46,8 @@ main(void)
 
   BSP_LED_Init(LED3);
 
-  BSP_LED_Toggle(LED3);
-  volatile uint32_t counter = 0;
-  for (;;) {
-     ++counter;
-     if (counter % 200000 == 0)
-        {
-           BSP_LED_Toggle(LED3);
-        }
+  ky_task_add(_task1, KY_TASK_PRIORITY_NORMAL);
+  ky_task_add(_task2, KY_TASK_PRIORITY_NORMAL);
 
-  }
-
-//  ky_task_add(_task1, KY_TASK_PRIORITY_NORMAL);
-//  ky_task_add(_task2, KY_TASK_PRIORITY_NORMAL);
-//
-//  ky_run();
+  ky_run();
 }

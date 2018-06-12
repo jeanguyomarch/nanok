@@ -1,21 +1,7 @@
-#include <ky/init.h>
-#include <ky/syscall.h>
-#include <ky/task.h>
-
-#include <stm32f4xx.h>
-
-typedef struct __attribute__((packed))
-{
-   uint32_t r0;
-   uint32_t r1;
-   uint32_t r2;
-   uint32_t r3;
-   uint32_t r12;
-   uint32_t lr;
-   uint32_t pc;
-   xPSR_Type xpsr;
-   /* XXX If the FPU is enabled, more elements are required */
-} s_exception_frame;
+#include "ky/init.h"
+#include "ky/syscall.h"
+#include "ky/task.h"
+#include "arch/exception_frame.h"
 
 /* Return to Thread mode, exception return uses non-floating-point state from
  * the PSP and execution uses PSP after return */
@@ -28,7 +14,6 @@ _task_return_cb(void)
 {
   ky_terminate();
 }
-
 
 KAPI void
 arch_task_setup(s_task *task)
@@ -66,22 +51,20 @@ arch_task_setup(s_task *task)
    uint32_t *const stack = task->stack;
    uint32_t *const stack_top = &(stack[task->stack_size / sizeof(uint32_t)]);
 
-   /* PSP: program stack pointer, starting from the top of the task. The first
-    * 32-bits is used to hold the entry point of the program */
-   uint32_t psp = ((uint32_t) stack_top) - sizeof(uint32_t);
-   *((uint32_t *)psp) = (uint32_t) task->start;
+   /* PSP: program stack pointer, starting from the top of the task. From the
+    * PSP we reserve the room to hold the exception frame. It is naturally
+    * aligned by design. */
+   const uint32_t psp = ((uint32_t) stack_top) - sizeof(s_exception_frame);
 
    /* Reserve a frame for the first exception return */
-   psp &= 0xFFFFFFF8; /* Alignment */
-   psp -= sizeof(s_exception_frame);
    s_exception_frame *const frame = (s_exception_frame *) psp;
    frame->r0 = UINT32_C(0);
    frame->r1 = UINT32_C(0);
    frame->r2 = UINT32_C(0);
    frame->r3 = UINT32_C(0);
    frame->r12 = UINT32_C(0);
-   frame->lr = (uint32_t) (&_task_return_cb);
-   frame->pc = UINT32_C(0);
+   frame->lr = (uint32_t) &_task_return_cb;
+   frame->pc = (uint32_t) task->start;
 
    /* xPSR: zeroed-out, except for the THUMB bit */
    frame->xpsr.w = UINT32_C(0);
@@ -92,7 +75,6 @@ arch_task_setup(s_task *task)
    s_task_context *const ctx = &(task->context);
    ctx->exc_return = EXC_RETURN_TO_THREAD;
    ctx->psp = psp;
-
 }
 
 KAPI void
@@ -107,7 +89,7 @@ _idle_main(void)
    for (;;) { ky_yield(); }
 }
 
-static t_stack_alignment _idle_stack[32];
+KY_STACK_DEFINE(_idle_stack, 128);
 
 s_task ky_idle_task =
 {

@@ -9,10 +9,6 @@
 # define __syscall__ __attribute__((always_inline)) static inline
 #endif
 
-#ifndef __syscall_handler__
-# define __syscall_handler__ __attribute__((naked)) noreturn
-#endif
-
 #define __weak__ __attribute__((weak))
 #define __unused__ __attribute__((unused))
 #define __printf__(FmtIdx, ArgIdx) __attribute__((__format__ (__gnu_printf__, FmtIdx, ArgIdx)))

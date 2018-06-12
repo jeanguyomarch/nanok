@@ -4,11 +4,11 @@
 #include "ky/assert.h"
 #include "arch/types.h"
 
-#define TASKS_COUNT 16u
+#define TASKS_COUNT 4u
 static s_task _tasks[TASKS_COUNT];
 static s_pool _task_pool = KY_POOL_INIT(_tasks);
 
-#define STACK_SIZE 1024u
+#define STACK_SIZE 512u 
 typedef t_stack_alignment t_stack[STACK_SIZE / sizeof(t_stack_alignment)];
 
 static t_stack _stacks[TASKS_COUNT];

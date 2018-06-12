@@ -2,7 +2,6 @@
 #define STM32F4_DISCO_ARCH_TASK_H__
 
 #include <stdint.h>
-#include <stdalign.h>
 
 typedef struct
 {

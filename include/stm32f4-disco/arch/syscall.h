@@ -6,11 +6,11 @@
 __syscall__ void ky_yield(void)
 {
    asm volatile(
-      "VPUSH {s16-s31}\n"
-      "CPSIE i\n"
-      "SVC 0\n"
-      "CPSID i\n"
-      "VPOP {s16-s31}\n"
+      /*"vpush {s16-s31}\n"*/
+      "cpsie i\n"
+      "svc 0\n"
+      "cpsid i\n"
+      /*"vpop {s16-s31}\n"*/
       :
       :
       : "memory", "r4", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12"
@@ -20,8 +20,8 @@ __syscall__ void ky_yield(void)
 __syscall__ noreturn void ky_run(void)
 {
    asm volatile(
-      "CPSIE i\n"
-      "SVC 1\n"
+      "cpsie i\n"
+      "svc 1\n"
       :
       :
       :
@@ -32,8 +32,8 @@ __syscall__ noreturn void ky_run(void)
 __syscall__ noreturn void ky_terminate(void)
 {
    asm volatile(
-      "CPSIE i\n"
-      "SVC 2\n"
+      "cpsie i\n"
+      "svc 2\n"
       :
       :
       :
