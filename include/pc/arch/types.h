@@ -1,3 +1,5 @@
+/* NanoK - MIT License */
+
 #ifndef PC_ARCH_TYPES_H__
 #define PC_ARCH_TYPES_H__
 

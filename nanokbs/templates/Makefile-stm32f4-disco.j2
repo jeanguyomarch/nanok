@@ -1,0 +1,37 @@
+{% extends "Makefile.j2" %}
+
+{% block gcc_cflags %}
+{{ super() -}}
+CFLAGS +=  -mcpu=cortex-m4
+CFLAGS +=  -mthumb
+CFLAGS +=  -mfloat-abi=softfp
+CFLAGS +=  -mfpu=fpv4-sp-d16
+CFLAGS +=  -march=armv7e-m
+{% endblock %}
+
+{% block gcc_ldflags %}
+{{ super() -}}
+LDFLAGS +=  -specs=nosys.specs                           
+LDFLAGS +=  -Wl,--gc-sections
+LDFLAGS +=  -mcpu=cortex-m4
+{% endblock %}
+
+{%- block gcc_cppflags %}
+{{ super() -}}
+CPPFLAGS +=  -DSTM32F429xx
+CPPFLAGS +=  -isystem $(NANOK_DIR)/lib/stm32/STM32F4xx_HAL_Driver/Inc
+CPPFLAGS +=  -isystem $(NANOK_DIR)/lib/stm32/CMSIS/Device/ST/STM32F4xx/Include
+CPPFLAGS +=  -isystem $(NANOK_DIR)/lib/stm32/CMSIS/Include
+CPPFLAGS +=  -isystem $(NANOK_DIR)/lib/stm32/BSP/STM32F429I-Discovery
+CPPFLAGS +=  -isystem $(NANOK_DIR)/include/stm32
+{% endblock %}
+
+{%- block gcc_link %}
+	$(Q)$(LD) $(LDFLAGS) -o $@ $^ -T $(NANOK_DIR)/src/arch/stm32f4-disco/ldscript.ld
+{%- endblock %}
+
+{%- block product_extra %}
+$(O)/{{ product.name }}.bin: $(O)/{{ product.name }}
+	$(call info-objcopy,$@)
+	$(Q)$(OBJCOPY) -O binary $< $@
+{%- endblock %}

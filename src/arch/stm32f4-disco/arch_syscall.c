@@ -1,7 +1,9 @@
-#include "ky/syscall.h"
-#include "ky/task.h"
-#include "ky/scheduler.h"
-#include "ky/assert.h"
+/* NanoK - MIT License */
+
+#include "nanok/syscall.h"
+#include "nanok/task.h"
+#include "nanok/scheduler.h"
+#include "nanok/assert.h"
 #include "arch/exception_frame.h"
 
 #include <stm32f4xx_hal.h>
@@ -38,8 +40,8 @@ _exception_return(uint32_t exc_return)
 static __syscall_handler__ void
 _syscall_run(void)
 {
-   s_task *const first_task = ky_scheduler_schedule();
-   KY_ASSERT(first_task != NULL);
+   s_task *const first_task = nk_scheduler_schedule();
+   NK_ASSERT(first_task != NULL);
 
    const s_task_context *const ctx = &(first_task->context);
 
@@ -51,8 +53,8 @@ _syscall_run(void)
 static __syscall_handler__ void
 _syscall_yield(void)
 {
-   s_task *const current_task = ky_scheduler_current_task_get();
-   s_task *const elected_task = ky_scheduler_schedule();
+   s_task *const current_task = nk_scheduler_current_task_get();
+   s_task *const elected_task = nk_scheduler_schedule();
 
    s_task_context *const prev_context = &(current_task->context);
    const s_task_context *const next_context = &(elected_task->context);
@@ -66,11 +68,11 @@ _syscall_yield(void)
 static __syscall_handler__ void
 _syscall_terminate(void)
 {
-   s_task *const current_task = ky_scheduler_current_task_get();
-   ky_task_del(current_task);
+   s_task *const current_task = nk_scheduler_current_task_get();
+   nk_task_del(current_task);
 
-   const s_task *const new_task = ky_scheduler_schedule();
-   KY_ASSERT(new_task != NULL);
+   const s_task *const new_task = nk_scheduler_schedule();
+   NK_ASSERT(new_task != NULL);
    const s_task_context *const new_context = &(new_task->context);
 
    __set_PSP(new_context->psp);
@@ -97,6 +99,6 @@ SVC_Handler(void)
       [1] = _syscall_run,
       [2] = _syscall_terminate,
    };
-   KY_ASSERT(svc_id < ARRAY_SIZE(syscall));
+   NK_ASSERT(svc_id < ARRAY_SIZE(syscall));
    syscall[svc_id]();
 }

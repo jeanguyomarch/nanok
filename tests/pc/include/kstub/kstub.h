@@ -1,14 +1,14 @@
 #ifndef KSTUB_KSTUB_H__
 #define KSTUB_KSTUB_H__
 
-#include "ky/assert.h"
+#include "nanok/assert.h"
 
 #include <stdio.h>
 #include <stdlib.h>
 
 #define KSTUB_ASSERT_HANDLER()                                  \
    KAPI noreturn void                                           \
-   ky_assert_fail(const char *filename,                         \
+   nk_assert_fail(const char *filename,                      \
                   unsigned long line,                           \
                   const char *failure)                          \
    {                                                            \

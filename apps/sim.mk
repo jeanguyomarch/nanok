@@ -1,2 +1,0 @@
-ARCH=pc
-TESTS_DIR=pc

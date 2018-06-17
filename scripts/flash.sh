@@ -3,13 +3,13 @@
 set -e
 set -u
 
-if [ $# -ne 1 ]; then
-   echo "ERROR: Usage: $0 <prog.bin>" 1>&2
+if [ $# -ne 2 ]; then
+   echo "ERROR: Usage: $0 <prog.bin> <loadaddr>" 1>&2
    exit 1
 fi
 
-LOADADDR=0x08000000 # FIXME
+BIN="$1"
+LOADADDR="$2"
 
 set -x
-
-st-flash --reset write "$1" "$LOADADDR"
+st-flash --reset write "$BIN" "$LOADADDR"

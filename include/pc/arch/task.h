@@ -1,3 +1,5 @@
+/* NanoK - MIT License */
+
 #ifndef ARCH_TASK_H__
 #define ARCH_TASK_H__
 

@@ -1,0 +1,6 @@
+tar
+git
+bzip2
+make
+build-essential
+curl

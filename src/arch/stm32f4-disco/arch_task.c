@@ -1,6 +1,8 @@
-#include "ky/init.h"
-#include "ky/syscall.h"
-#include "ky/task.h"
+/* NanoK - MIT License */
+
+#include "nanok/init.h"
+#include "nanok/syscall.h"
+#include "nanok/task.h"
 #include "arch/exception_frame.h"
 
 /* Return to Thread mode, exception return uses non-floating-point state from
@@ -12,7 +14,7 @@
 __attribute__((naked)) static void
 _task_return_cb(void)
 {
-  ky_terminate();
+  nk_terminate();
 }
 
 KAPI void
@@ -86,16 +88,16 @@ arch_task_cleanup(s_task *task __unused__)
 static void
 _idle_main(void)
 {
-   for (;;) { ky_yield(); }
+   for (;;) { nk_yield(); }
 }
 
-KY_STACK_DEFINE(_idle_stack, 128);
+NK_STACK_DEFINE(_idle_stack, 128);
 
-s_task ky_idle_task =
+s_task nk_idle_task =
 {
    .start = _idle_main,
    .stack = _idle_stack,
    .stack_size = sizeof(_idle_stack),
-   .status = KY_TASK_STATUS_INACTIVE,
-   .priority = KY_TASK_PRIORITY_NORMAL,
+   .status = NK_TASK_STATUS_INACTIVE,
+   .priority = NK_TASK_PRIORITY_NORMAL,
 };

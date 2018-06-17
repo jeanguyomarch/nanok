@@ -1,3 +1,7 @@
 *.sw?
 /build/
-st-util.log
+.st-util.log
+
+# nanokbs-generated files
+build.sh
+Makefile

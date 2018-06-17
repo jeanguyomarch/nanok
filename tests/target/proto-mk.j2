@@ -1,0 +1,18 @@
+{% extends "Makefile-stm32f4-disco.j2" %}
+
+{%- block gcc_cflags %}
+{{ super() }}
+CFLAGS +=  -g3 -O0 -ggdb
+{%- endblock %}
+
+{%- block extra %}
+{% for product in app.products %}
+flash-{{ product.name }}: $(O)/{{ product.name }}.bin
+	$(NANOK_DIR)/scripts/flash.sh $< 0x08000000
+
+gdb-{{ product.name }}: $(O)/{{ product.name }}
+	$(NANOK_DIR)/scripts/gdb-remote.sh $<
+
+.PHONY: flash-{{ product.name }} gdb-{{ product.name }}
+{% endfor %}
+{%- endblock %}

@@ -1,7 +1,9 @@
+/* NanoK - MIT License */
+
 #ifndef STM32F4_DISCO_ARCH_EXCEPTION_FRAME_H__
 #define STM32F4_DISCO_ARCH_EXCEPTION_FRAME_H__
 
-#include "ky/compiler.h"
+#include "nanok/compiler.h"
 
 #include <stm32f4xx.h>
 #include <stdint.h>

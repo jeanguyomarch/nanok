@@ -21,6 +21,6 @@ trap clean EXIT
 
 PORT=4242
 
-st-util --port "$PORT" --no-reset > "st-util.log" & ST_UTIL_PID=$!
+st-util --listen_port "$PORT" --no-reset > ".st-util.log" & ST_UTIL_PID=$!
 sleep 1
 arm-none-eabi-gdb "$1" -ex "target extended-remote :$PORT"

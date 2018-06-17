@@ -1,23 +1,21 @@
+/* NanoK - MIT License */
+
 #ifndef STM32F4_DISCO_ARCH_SYSCALL_H__
 #define STM32F4_DISCO_ARCH_SYSCALL_H__
 
-// High registers are not preserved during a context switch
-
-__syscall__ void ky_yield(void)
+__syscall__ void nk_yield(void)
 {
    asm volatile(
-      /*"vpush {s16-s31}\n"*/
       "cpsie i\n"
       "svc 0\n"
       "cpsid i\n"
-      /*"vpop {s16-s31}\n"*/
       :
       :
       : "memory", "r4", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12"
    );
 }
 
-__syscall__ noreturn void ky_run(void)
+__syscall__ noreturn void nk_run(void)
 {
    asm volatile(
       "cpsie i\n"
@@ -29,7 +27,7 @@ __syscall__ noreturn void ky_run(void)
    __builtin_unreachable();
 }
 
-__syscall__ noreturn void ky_terminate(void)
+__syscall__ noreturn void nk_terminate(void)
 {
    asm volatile(
       "cpsie i\n"
@@ -41,7 +39,7 @@ __syscall__ noreturn void ky_terminate(void)
    __builtin_unreachable();
 }
 
-__syscall__ noreturn void ky_stall(void)
+__syscall__ noreturn void nk_stall(void)
 {
    /* TODO Improve */
    for (;;) continue;

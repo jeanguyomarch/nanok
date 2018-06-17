@@ -1,7 +1,9 @@
-#include "ky/task.h"
-#include "ky/syscall.h"
-#include "ky/assert.h"
-#include "ky/log.h"
+/* NanoK - MIT License */
+
+#include "nanok/task.h"
+#include "nanok/syscall.h"
+#include "nanok/assert.h"
+#include "nanok/log.h"
 
 #include <stdlib.h>
 
@@ -14,7 +16,7 @@ _runner(f_task task_start)
 
    /* The functions will always end with the 'end' syscall, which will properly
     * destroy the task */
-   ky_terminate();
+   nk_terminate();
 }
 
 static const size_t _stack_size = 8u * (1u << 20u); /* 8 MiB */
@@ -36,7 +38,7 @@ arch_task_setup(s_task *task)
    ctx->uc_stack.ss_size = _stack_size;
 
    const int ret = getcontext(ctx);
-   KY_ASSERT(ret == 0);
+   NK_ASSERT(ret == 0);
    makecontext(ctx, (void(*)()) _runner, 1, task->start);
 }
 
@@ -57,15 +59,15 @@ _idle_main(void)
 {
    for (;;)
      {
-        ky_yield();
+        nk_yield();
      }
 }
 
-s_task ky_idle_task =
+s_task nk_idle_task =
 {
    .start = _idle_main,
    .stack = NULL,
    .stack_size = 0u,
-   .status = KY_TASK_STATUS_INACTIVE,
-   .priority = KY_TASK_PRIORITY_NORMAL,
+   .status = NK_TASK_STATUS_INACTIVE,
+   .priority = NK_TASK_PRIORITY_NORMAL,
 };

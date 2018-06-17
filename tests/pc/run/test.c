@@ -1,8 +1,8 @@
 #include "kstub/kstub.h"
 
-#include "ky/task.h"
-#include "ky/init.h"
-#include "ky/syscall.h"
+#include "nanok/task.h"
+#include "nanok/init.h"
+#include "nanok/syscall.h"
 
 KSTUB_ASSERT_HANDLER();
 
@@ -45,7 +45,7 @@ static void
 _task2(void)
 {
    EVENT(EVENT_TASK_2_BEFORE_YIELD);
-   ky_yield();
+   nk_yield();
    EVENT(EVENT_TASK_2_AFTER_YIELD);
 }
 
@@ -53,23 +53,23 @@ static void
 _task3(void)
 {
    EVENT(EVENT_TASK_3_BEFORE_YIELD_0);
-   ky_yield();
+   nk_yield();
    EVENT(EVENT_TASK_3_BEFORE_YIELD_1);
-   ky_yield();
+   nk_yield();
    EVENT(EVENT_TASK_3_AFTER_YIELD_1);
-   ky_stall();
+   nk_stall();
 }
 
 
 int
 main(void)
 {
-   ky_init();
-   ky_task_add(_task1, KY_TASK_PRIORITY_NORMAL);
-   ky_task_add(_task2, KY_TASK_PRIORITY_NORMAL);
-   ky_task_add(_task3, KY_TASK_PRIORITY_NORMAL);
+   nk_init();
+   nk_task_add(_task1, NK_TASK_PRIORITY_NORMAL);
+   nk_task_add(_task2, NK_TASK_PRIORITY_NORMAL);
+   nk_task_add(_task3, NK_TASK_PRIORITY_NORMAL);
 
-   ky_run();
+   nk_run();
 
    return EXIT_SUCCESS;
 }

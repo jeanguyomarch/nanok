@@ -1,7 +1,7 @@
-#ifndef KY_KTEST_KTEST_H__
-#define KY_KTEST_KTEST_H__
+#ifndef NK_KTEST_KTEST_H__
+#define NK_KTEST_KTEST_H__
 
-#include "ky/assert.h"
+#include "nanok/assert.h"
 
 #include <setjmp.h>
 #include <stdio.h>
@@ -16,7 +16,7 @@ typedef void (*const f_ktest)(void);
 #define KTEST_ASSERT(Condition_)                                        \
    do {                                                                 \
       if (! (Condition_)) {                                             \
-         ky_assert_fail(__FILE__, __LINE__ + 0UL, # Condition_);        \
+         nk_assert_fail(__FILE__, __LINE__ + 0UL, # Condition_);        \
       }                                                                 \
    } while (0)
 
@@ -39,7 +39,7 @@ ktest_run(f_ktest test)
   jmp_buf _ktest_ctx;                                           \
                                                                 \
   void                                                          \
-  ky_assert_fail(const char *filename,                          \
+  nk_assert_fail(const char *filename,                          \
                  unsigned long line,                            \
                  const char *failure)                           \
   {                                                             \
@@ -59,4 +59,4 @@ ktest_run(f_ktest test)
     return failed_tests;                                        \
   }
 
-#endif /* ! KY_KTEST_KTEST_H__ */
+#endif /* ! NK_KTEST_KTEST_H__ */
