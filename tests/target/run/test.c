@@ -11,7 +11,7 @@ nk_assert_fail(const char *filename __unused__,
                unsigned long line __unused__,
                const char *failure)
 {
-   arch_log_puts(failure);
+//   arch_log_puts(failure);
    for (;;) continue;
 }
 
@@ -46,8 +46,8 @@ main(void)
 
   BSP_LED_Init(LED3);
 
-  nk_task_add(_task1, NK_TASK_PRIORITY_NORMAL);
-  nk_task_add(_task2, NK_TASK_PRIORITY_NORMAL);
+  nk_task_add(_task1);
+  nk_task_add(_task2);
 
   nk_run();
 }

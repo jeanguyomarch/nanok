@@ -54,6 +54,22 @@ static __syscall_handler__ void
 _syscall_yield(void)
 {
    s_task *const current_task = nk_scheduler_current_task_get();
+   nk_scheduler_enqueue(current_task);
+   s_task *const elected_task = nk_scheduler_schedule();
+
+   s_task_context *const prev_context = &(current_task->context);
+   const s_task_context *const next_context = &(elected_task->context);
+
+   prev_context->psp = __get_PSP();
+
+   __set_PSP(next_context->psp);
+   _exception_return(next_context->exc_return);
+}
+
+static __syscall_handler__ void
+_syscall_await(void)
+{
+   s_task *const current_task = nk_scheduler_current_task_get();
    s_task *const elected_task = nk_scheduler_schedule();
 
    s_task_context *const prev_context = &(current_task->context);
@@ -79,6 +95,7 @@ _syscall_terminate(void)
    _exception_return(new_context->exc_return);
 }
 
+
 __attribute__((naked)) noreturn void
 SVC_Handler(void)
 {
@@ -98,6 +115,7 @@ SVC_Handler(void)
       [0] = _syscall_yield,
       [1] = _syscall_run,
       [2] = _syscall_terminate,
+      [3] = _syscall_await,
    };
    NK_ASSERT(svc_id < ARRAY_SIZE(syscall));
    syscall[svc_id]();

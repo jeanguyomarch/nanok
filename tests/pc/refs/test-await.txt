@@ -1,0 +1,12 @@
+_reader_1: Awaiting event 1
+_reader_2: Awaiting event 2
+_producer: Hi, I'm the producer. I'll emit events 1 & 2
+_producer: Done. I'll now wait for reader 2 to end
+_sentinel: Awaiting for end event
+_reader_1: I received event 1. Waiting again
+_reader_2: Event 2 received. Will end now
+_producer: Reader 2 shall be dead. I'll send event 1 a second time
+_producer: Done. I'll wait for reader 1 to end
+_reader_1: Second event received. Will end now.
+_producer: I'll send a termination signal, then end
+_sentinel: End event received. Stalling...

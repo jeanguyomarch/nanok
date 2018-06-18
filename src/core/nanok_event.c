@@ -52,18 +52,9 @@ KAPI void
 nk_event_trigger(s_event *event)
 {
    NK_ASSERT(event->task != NULL);
-   nk_scheduler_add(event->task);
+   nk_scheduler_enqueue(event->task);
    if (! event->repeats)
      nk_event_free(event);
-}
-
-KAPI void
-nk_event_await(s_event *event,
-               s_task *task)
-{
-   nk_event_bind(event, task);
-   task->status = NK_TASK_STATUS_WAITING;
-   nk_yield();
 }
 
 KAPI void

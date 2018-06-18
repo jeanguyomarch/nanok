@@ -1,0 +1,6 @@
+_task1: start, will end
+_task2: start, before yield
+_task3: start, before yield
+_task2: after yield
+_task3: inbetween yields
+_task3: after yield, will stall

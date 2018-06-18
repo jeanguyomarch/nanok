@@ -19,5 +19,4 @@ nk_init(void)
    /* Initialize the scheduler. We shall have at least one task ready to be
     * run. It may be just the IDLE task, but we REQUIRE one task */
    nk_scheduler_init();
-   NK_ASSERT(nk_scheduler_current_task_get() != NULL);
 }

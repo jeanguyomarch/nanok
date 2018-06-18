@@ -24,19 +24,16 @@ nk_task_init(void)
 }
 
 KAPI s_task *
-nk_task_add(f_task start,
-            e_task_priority priority)
+nk_task_add(f_task start)
 {
    s_task *const task = nk_pool_reserve(&_task_pool);
 
    task->start = start;
    task->stack = nk_pool_reserve(&_stack_pool);
    task->stack_size = STACK_SIZE;
-   task->priority = priority;
-   task->status = NK_TASK_STATUS_INACTIVE;
 
    arch_task_setup(task);
-   nk_scheduler_add(task);
+   nk_scheduler_enqueue(task);
 
    return task;
 }
@@ -45,7 +42,6 @@ KAPI void
 nk_task_del(s_task *task)
 {
    arch_task_cleanup(task);
-   nk_scheduler_del(task);
    nk_pool_release(&_stack_pool, task->stack);
    nk_pool_release(&_task_pool, task);
 }

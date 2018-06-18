@@ -54,8 +54,6 @@ ktest_run(f_ktest test)
     int failed_tests = 0;                                       \
     for (size_t i = 0u; i < nb_tests; i++)                      \
     { failed_tests += ktest_run(_tests[i]) ? 0 : 1; }           \
-    printf("--   PASSED: %i / %zu\n",                           \
-          (int) nb_tests - failed_tests, nb_tests);             \
     return failed_tests;                                        \
   }
 

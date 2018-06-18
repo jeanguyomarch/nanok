@@ -84,20 +84,3 @@ arch_task_cleanup(s_task *task __unused__)
 {
    /* Nothing to do */
 }
-
-static void
-_idle_main(void)
-{
-   for (;;) { nk_yield(); }
-}
-
-NK_STACK_DEFINE(_idle_stack, 128);
-
-s_task nk_idle_task =
-{
-   .start = _idle_main,
-   .stack = _idle_stack,
-   .stack_size = sizeof(_idle_stack),
-   .status = NK_TASK_STATUS_INACTIVE,
-   .priority = NK_TASK_PRIORITY_NORMAL,
-};

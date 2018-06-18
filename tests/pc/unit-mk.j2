@@ -1,5 +1,12 @@
 {% extends "Makefile.j2" %}
 
+{% block gcc_cflags %}
+{{ super() -}}
+CFLAGS +=  -O0
+CFLAGS +=  -g3
+CFLAGS +=  -ggdb
+{% endblock %}
+
 {% block gcc_cppflags %}
 {{ super() -}}
 CPPFLAGS +=  -I$(NANOK_DIR)/tests/pc/include
@@ -10,7 +17,9 @@ CPPFLAGS +=  -I$(NANOK_DIR)/tests/pc/include
 check:{% for product in app.products %} $(O)/{{ product.name }}{% endfor %}
 {%- for product in app.products %}
 	@echo "  TEST      {{ product.name }}"
-	$(Q)$(O)/{{ product.name }} > /dev/null
+	$(Q)$(NANOK_DIR)/tests/pc/run-test.sh \
+          $(O)/{{ product.name }} \
+          $(NANOK_DIR)/tests/pc/refs/{{ product.name }}.txt
 {%- endfor %}
 
 .PHONY: check

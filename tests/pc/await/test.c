@@ -80,10 +80,10 @@ main(void)
    _reader_2_ended = nk_event_new();
    _prod_end_evt = nk_event_new();
 
-   nk_task_add(_reader_1, NK_TASK_PRIORITY_NORMAL);
-   nk_task_add(_reader_2, NK_TASK_PRIORITY_NORMAL);
-   nk_task_add(_producer, NK_TASK_PRIORITY_NORMAL);
-   nk_task_add(_sentinel, NK_TASK_PRIORITY_NORMAL);
+   nk_task_add(_reader_1);
+   nk_task_add(_reader_2);
+   nk_task_add(_producer);
+   nk_task_add(_sentinel);
 
    nk_run();
 

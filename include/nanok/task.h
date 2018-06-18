@@ -20,19 +20,6 @@
 
 typedef void (*f_task)(void);
 
-typedef enum
-{
-   NK_TASK_STATUS_INACTIVE = 0x1A,
-   NK_TASK_STATUS_ACTIVE = 0x32,
-   NK_TASK_STATUS_WAITING = 0x2C,
-} e_task_status;
-
-typedef enum
-{
-   NK_TASK_PRIORITY_NORMAL = 0x08,
-   NK_TASK_PRIORITY_URGENT = 0x24,
-} e_task_priority;
-
 typedef struct
 {
    NK_INLIST;
@@ -42,17 +29,13 @@ typedef struct
    f_task start;
    t_stack_alignment *stack;
    size_t stack_size;
-   e_task_status status;
-   e_task_priority priority;
 
 } s_task;
 
 KAPI void nk_task_init(void);
-KAPI s_task *nk_task_add(f_task start, e_task_priority priority);
+KAPI s_task *nk_task_add(f_task start);
 KAPI void nk_task_del(s_task *task);
 KAPI void arch_task_setup(s_task *task);
 KAPI void arch_task_cleanup(s_task *task);
-
-KAPI extern s_task nk_idle_task;
 
 #endif /* ! NANOK_TASK_H__ */

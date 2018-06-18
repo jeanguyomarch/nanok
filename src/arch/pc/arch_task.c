@@ -7,8 +7,6 @@
 
 #include <stdlib.h>
 
-ucontext_t main_context;
-
 static void
 _runner(f_task task_start)
 {
@@ -21,7 +19,7 @@ _runner(f_task task_start)
 
 static const size_t _stack_size = 8u * (1u << 20u); /* 8 MiB */
 
-static uint8_t *
+static inline uint8_t *
 _stack_new(void)
 {
    return malloc(_stack_size);
@@ -53,21 +51,3 @@ KAPI void
 arch_init(void)
 {
 }
-
-static void
-_idle_main(void)
-{
-   for (;;)
-     {
-        nk_yield();
-     }
-}
-
-s_task nk_idle_task =
-{
-   .start = _idle_main,
-   .stack = NULL,
-   .stack_size = 0u,
-   .status = NK_TASK_STATUS_INACTIVE,
-   .priority = NK_TASK_PRIORITY_NORMAL,
-};
