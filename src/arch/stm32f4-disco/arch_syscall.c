@@ -8,9 +8,6 @@
 
 #include <stm32f4xx_hal.h>
 
-void SysTick_Handler(void) { HAL_IncTick(); }
-
-
 #define __syscall_handler__ __attribute__((naked)) noreturn
 
 __attribute__((always_inline)) static inline uint32_t

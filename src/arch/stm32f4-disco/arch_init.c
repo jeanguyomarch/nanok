@@ -77,8 +77,6 @@ arch_init(void)
    HAL_NVIC_SetPriorityGrouping(0);
    HAL_NVIC_SetPriority(SVCall_IRQn, 0xFF, 0x00);
 
-   __disable_irq();
-
    // Enable FPU
    SCB->CPACR |= 0xF << 20;
    __ISB();

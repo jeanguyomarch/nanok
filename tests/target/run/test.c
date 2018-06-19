@@ -11,7 +11,7 @@ nk_assert_fail(const char *filename __unused__,
                unsigned long line __unused__,
                const char *failure)
 {
-//   arch_log_puts(failure);
+   arch_log_puts(failure);
    for (;;) continue;
 }
 
@@ -20,7 +20,6 @@ static volatile uint32_t _counter = UINT32_C(0);
 static void
 _task1(void)
 {
-   //  arch_log_puts("This is task1");
    for (;;) {
       _counter += UINT32_C(1);
       nk_yield();
@@ -31,10 +30,12 @@ _task1(void)
 static void
 _task2(void)
 {
-   // arch_log_puts("This is task2");
    for (;;) {
       if (_counter % 200000 == 0)
-        BSP_LED_Toggle(LED3);
+      {
+         arch_log_puts("Toggle led");
+         BSP_LED_Toggle(LED3);
+      }
       nk_yield();
    }
 }
