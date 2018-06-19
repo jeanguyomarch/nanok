@@ -27,7 +27,6 @@
          "arch": "stm32f4-disco",
          "c_sources": [
             "arch_bsp.c",
-            "arch_clock.c",
             "arch_init.c",
             "arch_interrupts.c",
             "arch_log.c",
