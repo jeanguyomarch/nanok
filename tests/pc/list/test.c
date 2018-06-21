@@ -17,7 +17,7 @@ test_list_init(void)
    for (size_t i = 0u; i < 8u; i++)
      {
         s_item *const item = &(_items[i]);
-        nk_inlist_init(NK_INLIST_GET(item));
+        nk_inlist_setup(NK_INLIST_GET(item));
         item->id = i;
      }
 }

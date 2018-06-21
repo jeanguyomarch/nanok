@@ -40,7 +40,7 @@ typedef struct
 
 
 static inline void
-nk_inlist_init(s_inlist *inlist)
+nk_inlist_setup(s_inlist *inlist)
 {
    inlist->next = NULL;
    inlist->prev = NULL;
@@ -59,11 +59,42 @@ nk_list_add_tail(s_list *list, s_inlist *inlist)
 }
 
 static inline void
+nk_inlist_add_after(s_inlist *elem, s_inlist *to_add)
+{
+   to_add->next = elem->next;
+   to_add->prev = elem;
+   elem->next->prev = to_add;
+   elem->next = to_add;
+}
+
+static inline void
+nk_list_add_after(s_list *list, s_inlist *elem, s_inlist *to_add)
+{
+   nk_inlist_add_after(elem, to_add);
+   list->count += 1u;
+}
+
+static inline void
+nk_inlist_add_before(s_inlist *elem, s_inlist *to_add)
+{
+   to_add->next = elem;
+   to_add->prev = elem->prev;
+   elem->prev->next = to_add;
+   elem->prev = to_add;
+}
+
+static inline void
+nk_list_add_before(s_list *list, s_inlist *elem, s_inlist *to_add)
+{
+   nk_inlist_add_before(elem, to_add);
+   list->count += 1u;
+}
+
+static inline void
 nk_inlist_del(s_inlist *inlist)
 {
    inlist->next->prev = inlist->prev;
    inlist->prev->next = inlist->next;
-   nk_inlist_init(inlist);
 }
 
 static inline void
