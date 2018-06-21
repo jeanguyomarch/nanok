@@ -74,7 +74,7 @@ main(void)
 {
    nk_init();
 
-   _prod_to_1 = nk_event_repeated_new();
+   _prod_to_1 = nk_event_new();
    _prod_to_2 = nk_event_new();
    _reader_1_ended = nk_event_new();
    _reader_2_ended = nk_event_new();

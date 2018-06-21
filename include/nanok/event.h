@@ -8,10 +8,14 @@
 #include "nanok/task.h"
 
 typedef struct event s_event;
+struct event
+{
+   s_task *task;
+};
 
 KAPI void nk_event_init(void);
 KAPI s_event *nk_event_new(void);
-KAPI s_event *nk_event_repeated_new(void);
+KAPI void nk_event_setup(s_event *event);
 KAPI void nk_event_free(s_event *event);
 KAPI void nk_event_trigger(s_event *event);
 KAPI void nk_event_bind(s_event *event, s_task *task);
