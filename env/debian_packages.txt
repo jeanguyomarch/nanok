@@ -1,3 +1,8 @@
 build-essential
+bzip2
+curl
 diffutils
+git
+make
 ninja-build
+tar

@@ -1,0 +1,11 @@
+{%- extends "build.ninja-stm32f4.j2" %}
+
+{%- block rules %}
+{{ super() }}
+
+rule flash
+  command = {{ nanok.dir }}/scripts/flash.sh $in 0x08000000
+
+rule gdb
+  command = {{ nanok.dir }}/scripts/gdb-remote.sh $in
+{%- endblock %}

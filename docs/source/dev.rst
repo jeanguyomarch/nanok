@@ -29,6 +29,17 @@ GNU/Linux distribution. It must be run from the top-source directory of NanoK:
 | Debian/Ubuntu | ``cat env/debian_packages.txt | xargs sudo apt install``   |
 +---------------+------------------------------------------------------------+
 
+If you plan to develop for the STM32f4 platform, you will need to install the
+following tools:
+
+* the ``arm-none-eabi-`` GCC toolchain. You may find it `here
+  <https://developer.arm.com/open-source/gnu-toolchain/gnu-rm/downloads>`_;
+* the `st-link`_ utility, to flash and debug your applications on the hardware
+  target.
+
+See :file:`scripts/gen-disco.sh` to have an idea of the build and installation
+procedure of these tools.
+
 
 Building the Core Unit Tests
 -------------------------------------------------------------------------------
@@ -53,8 +64,43 @@ following:
 To better understand what the tests do, and how to maintain them, please refer
 to the :doc:`unit` page.
 
+
+Developping on the STM32f4
+-------------------------------------------------------------------------------
+
+As previously mentioned, you will need the install the `st-link`_ utility. Run
+the following:
+
+.. code:: sh
+
+   git clone https://github.com/texane/stlink.git
+   make -C stlink release
+   sudo make -C stlink/build/Release install
+
+
+Note that this will install ``st-link`` on your system. This is required
+because udev rules are distributed.
+
+Then, run the following to compile, flash and start to run the test application:
+
+.. code:: sh
+   
+   ./scripts/gen-disco.sh
+   ninja gdb-test-run
+
+This will compile the application and uploaded through a GDB server interface.
+You can now drive the application:
+
+.. code:: gdb
+   
+   load
+   continue
+
+
+
 .. _hjson: https://pypi.org/project/hjson/
 .. _jinja2: https://pypi.org/project/Jinja2/
 .. _ninja: https://ninja-build.org
 .. _gcc: https://www.gnu.org/software/gcc/
 .. _diff: https://www.gnu.org/software/diffutils/
+.. _st-link: https://github.com/texane/stlink.git
