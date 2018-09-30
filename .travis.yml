@@ -1,0 +1,19 @@
+# The main language is python because the primarily build system is nanokbs,
+# which is in python.
+language: python
+python:
+  - "3.4"
+
+addons:
+  apt:
+    sources:
+      - george-edison55-precise-backports
+    packages:
+      - build-essential
+      - diffutils
+      - ninja-build
+
+install:
+  pip install -r env/requirements.txt
+
+script: ./scripts/ci.sh

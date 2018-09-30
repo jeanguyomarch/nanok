@@ -1,2 +1,4 @@
 hjson
 jinja2
+sphinx
+sphinx-autobuild
