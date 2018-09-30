@@ -1,0 +1,38 @@
+{%- extends "build.ninja.j2" %}
+
+{%- block rules %}
+
+cflags = $
+  -Wall -Wextra -Wshadow -Winit-self -Wfloat-equal -Wtrigraphs -Wconversion $
+  -Wlogical-op -Wunsafe-loop-optimizations -Wdouble-promotion -Wformat=2 $
+  -fomit-frame-pointer -ffreestanding -nostdlib -std=gnu11 -ggdb -O0 -g3
+
+ldflags =
+
+cppflags =                      $
+  -I {{ nanok.dir }}/include    $
+  -I {{ nanok.dir }}/include/{{ app.arch }} $
+  -I {{ nanok.dir }}/tests/pc/include
+
+rule cc
+  command = gcc -MMD -MF $out.d $cflags $cppflags $EXTRA_FLAGS -c -o $out $in
+  deps = gcc
+  depfile = $out.d
+
+rule ld
+  command = gcc $ldflags -o $out $in -lrt
+
+rule check
+  command = {{ nanok.dir }}/tests/pc/run-test.sh $builddir/$in {{ nanok.dir }}/tests/pc/refs/$in.txt
+
+{%- for product in app.products %}
+build check-{{ product.name }}: check {{ product.name }} | $builddir/{{ product.name }}
+{%- endfor %}
+build check: phony |{% for product in app.products %} check-{{ product.name }}{% endfor %}
+{%- endblock %}
+
+{%- block product %}
+build {{ product.name }}: phony $builddir/{{ product.name }}
+{%- endblock %}
+
+{# EOF -- leave me here! Ninja WANTS to end its file with an EOL #}

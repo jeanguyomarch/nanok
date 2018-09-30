@@ -1,31 +1,31 @@
 {
-   "modules": [
+   modules: [
       {
-         "name": "core",
-         "path": "src/core",
-         "arch": ".*",
-         "c_sources": [
+         name: "core"
+         path: "src/core"
+         arch: ".*"
+         c_sources: [
             "nanok_event.c",
             "nanok_init.c",
             "nanok_pool.c",
             "nanok_scheduler.c",
             "nanok_task.c"
          ]
-      },
+      }
       {
-         "name": "arch:pc",
-         "path": "src/arch/pc",
-         "arch": "pc",
-         "c_sources": [
+         name: "arch:pc"
+         path: "src/arch/pc"
+         arch: "pc"
+         c_sources: [
             "arch_log.c",
             "arch_task.c"
          ]
-      },
+      }
       {
-         "name": "arch:stm32f4-disco",
-         "path": "src/arch/stm32f4-disco",
-         "arch": "stm32f4-disco",
-         "c_sources": [
+         name: "arch:stm32f4-disco"
+         path: "src/arch/stm32f4-disco"
+         arch: "stm32f4-disco"
+         c_sources: [
             "arch_bsp.c",
             "arch_init.c",
             "arch_interrupts.c",
@@ -33,15 +33,15 @@
             "arch_syscall.c",
             "arch_task.c"
          ],
-         "asm_sources": [
+         asm_sources: [
             "start.S"
          ]
-      },
+      }
       {
-         "name": "stm32:hal",
-         "path": "lib/stm32/STM32F4xx_HAL_Driver/Src",
-         "arch": "stm32f4-disco",
-         "c_sources": [
+         name: "stm32:hal"
+         path: "lib/stm32/STM32F4xx_HAL_Driver/Src"
+         arch: "stm32f4-disco"
+         c_sources: [
             "stm32f4xx_hal.c",
             "stm32f4xx_hal_adc.c",
             "stm32f4xx_hal_adc_ex.c",
@@ -108,39 +108,39 @@
             "stm32f4xx_ll_fsmc.c",
             "stm32f4xx_ll_sdmmc.c",
             "stm32f4xx_ll_usb.c"
-         ],
-         "third_party": true
+         ]
+         third_party: true
       },
       {
-         "name": "bsp-stm32f429i-discovery",
-         "path": "lib/stm32/BSP/STM32F429I-Discovery",
-         "arch": "stm32f4-disco",
-         "c_sources": [
+         name: "bsp-stm32f429i-discovery"
+         path: "lib/stm32/BSP/STM32F429I-Discovery"
+         arch: "stm32f4-disco"
+         c_sources: [
             "stm32f429i_discovery.c",
             "stm32f429i_discovery_eeprom.c",
             "stm32f429i_discovery_io.c",
             "stm32f429i_discovery_sdram.c",
             "stm32f429i_discovery_lcd.c"
-         ],
-         "third_party": true
-      },
+         ]
+         third_party: true
+      }
       {
-         "name": "stm32:ili9341",
-         "path": "lib/stm32/BSP/Components/ili9341",
-         "arch": "stm32f4-.*",
-         "c_sources": [
+         name: "stm32:ili9341"
+         path: "lib/stm32/BSP/Components/ili9341"
+         arch: "stm32f4-.*"
+         c_sources: [
             "ili9341.c"
-         ],
-         "third_party": true
-      },
+         ]
+         third_party: true
+      }
       {
-         "name": "stm32:stmpe811",
-         "path": "lib/stm32/BSP/Components/stmpe811",
-         "arch": "stm32f4-.*",
-         "c_sources": [
+         name: "stm32:stmpe811"
+         path: "lib/stm32/BSP/Components/stmpe811"
+         arch: "stm32f4-.*"
+         c_sources: [
             "stmpe811.c"
-         ],
-         "third_party": true
+         ]
+         third_party: true
       }
    ]
 }

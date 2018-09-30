@@ -1,0 +1,35 @@
+{
+   app: {
+      arch: "pc"
+      products: [
+         {
+            name: "test-await"
+            path: "tests/pc/await"
+            c_sources: [
+               "test.c"
+            ]
+         }
+         {
+            name: "test-pool"
+            path: "tests/pc/pool"
+            c_sources: [
+               "test.c"
+            ]
+         }
+         {
+            name: "test-list"
+            path: "tests/pc/list"
+            c_sources: [
+               "test.c"
+            ]
+         }
+         {
+            name: "test-run"
+            path: "tests/pc/run"
+            c_sources: [
+               "test.c"
+            ]
+         }
+      ]
+   }
+}

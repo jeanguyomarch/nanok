@@ -1,20 +1,29 @@
 #! /usr/bin/env python3
 
 import argparse
-import json
 import os
 import re
 import sys
 
+import hjson
 import jinja2
 
 THIS_DIR = os.path.dirname(os.path.realpath(__file__))
 NANOK_DIR = os.path.abspath(os.path.join(THIS_DIR, os.pardir))
 
+class Help:
+    APP = "Path to the (relaxed) JSON file that describes the NanoK Application"
+    TEMPLATE = "Path to the build system template file"
+    OUTPUT = "Path where to store the templated build system"
+
 def getopts(argv):
     parser = argparse.ArgumentParser(description='NanoK build system generator')
-    parser.add_argument('app')
-    parser.add_argument('config')
+    parser.add_argument('--app', '-a', metavar='APP.hjson',
+                        required=True, help=Help.APP)
+    parser.add_argument('--template', '-t', metavar='BUILD.j2',
+                        required=True, help=Help.TEMPLATE)
+    parser.add_argument('--output', '-o', metavar='OUTPUT',
+                        help=Help.OUTPUT)
     return parser.parse_args(argv[1:])
 
 def canon(path):
@@ -22,7 +31,7 @@ def canon(path):
         path = path.replace(elt, "_")
     return path
 
-def template_nanokbs(config, db):
+def template_nanokbs(config, db, output):
     search_paths = [
         os.path.join(THIS_DIR, "templates"),
         os.path.dirname(config),
@@ -30,13 +39,18 @@ def template_nanokbs(config, db):
 
     j2_env = jinja2.Environment(
         loader=jinja2.FileSystemLoader(search_paths),
-        undefined=jinja2.StrictUndefined
+        undefined=jinja2.StrictUndefined,
+        extensions=['jinja2.ext.do']
     )
     j2_env.filters['canon'] = canon
     template = j2_env.get_template(os.path.basename(config))
 
-    output = template.render(db)
-    print(output)
+    result = template.render(db)
+    if output is not None:
+        with open(output, 'w') as stream:
+            stream.write(result)
+    else:
+        print(result)
 
 
 # These are the keys that allow to define source files (any language)
@@ -73,13 +87,13 @@ def main(argv):
     args = getopts(argv)
 
     # Load the nanok configuration file
-    nanok_file = os.path.join(THIS_DIR, "nanok.json")
+    nanok_file = os.path.join(THIS_DIR, "nanok.hjson")
     with open(nanok_file, 'r') as stream:
-        nanok_db = json.load(stream)
+        nanok_db = hjson.load(stream)
 
     # Load the app configuration file
     with open(args.app, 'r') as stream:
-        app_db = json.load(stream)
+        app_db = hjson.load(stream)
     # Easy access to the "app" key of the app configuration
     app = app_db["app"]
 
@@ -127,7 +141,7 @@ def main(argv):
         "app": app,
     }
 
-    template_nanokbs(args.config, db)
+    template_nanokbs(args.template, db, args.output)
 
 if __name__ == "__main__":
     main(sys.argv)

@@ -1,0 +1,44 @@
+{%- extends "build.ninja.j2" %}
+
+{%- block rules %}
+
+cflags = $
+  -Wall -Wextra -Wshadow -Winit-self -Wfloat-equal -Wtrigraphs -Wconversion $
+  -Wlogical-op -Wunsafe-loop-optimizations -Wdouble-promotion -Wformat=2 $
+  -fomit-frame-pointer -ffreestanding -nostdlib -std=gnu11 -mcpu=cortex-m4 $
+  -mthumb -mfloat-abi=softfp -mfpu=fpv4-sp-d16 -march=armv7e-m
+{%- if app.debug %} -ggdb -O0 -g3 {%- endif %}
+
+asflags =
+
+ldflags =                       $
+  -specs=nosys.specs            $
+  -Wl,--gc-sections             $
+  -mcpu=cortex-m4
+
+cppflags =                      $
+  -I {{ nanok.dir }}/include    $
+  -I {{ nanok.dir }}/include/{{ app.arch }} $
+  -DSTM32F429xx                 $
+  -isystem {{ nanok.dir }}/lib/stm32/STM32F4xx_HAL_Driver/Inc $
+  -isystem {{ nanok.dir }}/lib/stm32/CMSIS/Device/ST/STM32F4xx/Include $
+  -isystem {{ nanok.dir }}/lib/stm32/CMSIS/Include $
+  -isystem {{ nanok.dir }}/lib/stm32/BSP/STM32F429I-Discovery $
+  -isystem {{ nanok.dir }}/include/stm32
+
+
+rule cc
+  command = arm-none-eabi-gcc -MMD -MF $out.d $cflags $cppflags $EXTRA_FLAGS -c -o $out $in
+  deps = gcc
+  depfile = $out.d
+
+rule as
+  command = arm-none-eabi-gcc $asflags -c -o $out $in
+
+rule ld
+  command = arm-none-eabi-gcc $ldflags -T {{ nanok.dir }}/src/arch/stm32f4-disco/ldscript.ld -o $out $in
+
+rule objcopy
+  command = arm-none-eabi-objcopy -O binary $in $out
+
+{%- endblock %}

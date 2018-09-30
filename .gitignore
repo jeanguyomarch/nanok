@@ -1,7 +1,7 @@
 *.sw?
 /build/
 .st-util.log
+/docs/build/
 
 # nanokbs-generated files
-build.sh
-Makefile
+/build.ninja

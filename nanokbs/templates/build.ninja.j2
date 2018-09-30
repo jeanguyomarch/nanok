@@ -1,0 +1,48 @@
+
+{#- Converts a source to the path of its associated object file -#}
+{%- macro to_obj(src) %}{{ src | canon }}.o{% endmacro %}
+
+
+builddir = build
+
+{%- block rules %}
+{%- endblock %}
+
+rule mkdir
+  command = mkdir -p -- $out
+
+{% set nanok_objects = [] %}
+
+build $builddir/nanok: mkdir
+
+
+{%- for module in nanok.modules %}
+  {%- for c_src in module.c_sources %}
+    {%- do nanok_objects.append("$builddir/nanok/" ~ to_obj(c_src)) %}
+build $builddir/nanok/{{ to_obj(c_src) }}: cc {{ c_src }} || $builddir/nanok
+    {% if module.third_party %}EXTRA_FLAGS = -w{% endif %}
+  {%- endfor %}
+  {%- for asm_src in module.asm_sources %}
+    {%- do nanok_objects.append("$builddir/nanok/" ~ to_obj(asm_src)) %}
+build $builddir/nanok/{{ to_obj(asm_src) }}: as {{ asm_src }} || $builddir/nanok
+  {%- endfor %}
+{%- endfor %}
+
+{%- for product in app.products %}
+  {%- set product_objs = [] %}
+  {%- for c_src in product.c_sources %}
+    {%- do product_objs.append("$builddir/" ~ to_obj(c_src)) %}
+build $builddir//{{ to_obj(c_src) }}: cc {{ c_src }}
+  {%- endfor %}
+build $builddir/{{ product.name }}: ld{% for obj in nanok_objects %} {{ obj }}{% endfor %}
+  {%- for obj in product_objs %} {{ obj }}{% endfor %}
+
+{%- block product scoped %}
+build $builddir/{{ product.name }}.bin: objcopy $builddir/{{ product.name }}
+
+build {{ product.name }}: phony $builddir/{{ product.name }}.bin
+{%- endblock %}
+
+{%- endfor %}
+
+{# EOF -- leave me here! Ninja WANTS to end its file with an EOL #}
