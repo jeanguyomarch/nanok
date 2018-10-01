@@ -4,6 +4,7 @@
 #define NANOK_SYSCALL_H__
 
 #include "nanok/compiler.h"
+#include <stdnoreturn.h>
 
 struct event;
 

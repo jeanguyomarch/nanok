@@ -1,6 +1,0 @@
-/* NanoK - MIT License */
-
-#ifndef STM32F4_DISCO_ARCH_COMPILER_H__
-#define STM32F4_DISCO_ARCH_COMPILER_H__
-
-#endif /* ! STM32F4_DISCO_ARCH_COMPILER_H__ */ 
