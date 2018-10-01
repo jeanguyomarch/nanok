@@ -1,7 +1,7 @@
 /* NanoK - MIT License */
 
 #include "nanok/pool.h"
-#include "nanok/assert.h"
+#include <assert.h>
 
 struct pool_item
 {
@@ -32,7 +32,7 @@ nk_pool_reserve(s_pool *pool)
 {
    s_pool_item *const old_head = pool->head;
 
-   NK_ASSERT(old_head != NULL);
+   assert(old_head != NULL);
 
    pool->head = old_head->next;
 
@@ -45,8 +45,8 @@ nk_pool_release(s_pool *pool,
 {
    s_pool_item *const item = data;
 
-   NK_ASSERT((item >= pool->storage) &&
-             (item < pool->storage + (pool->size * pool->elem_size)));
+   assert((item >= pool->storage) &&
+          (item < pool->storage + (pool->size * pool->elem_size)));
 
    s_pool_item *const old_head = pool->head;
    pool->head = item;
@@ -69,8 +69,8 @@ nk_pool_index_get(const s_pool *pool,
    const uint8_t *const item = data;
    const uint8_t *const storage = (const uint8_t *) pool->storage;
 
-   NK_ASSERT((item >= storage) &&
-             (item < storage + (pool->size * pool->elem_size)));
+   assert((item >= storage) &&
+          (item < storage + (pool->size * pool->elem_size)));
 
    return (size_t)(item - storage) / pool->elem_size;
 }

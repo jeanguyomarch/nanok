@@ -3,7 +3,6 @@
 #include "nanok/task.h"
 #include "nanok/scheduler.h"
 #include "nanok/pool.h"
-#include "nanok/assert.h"
 #include "arch/types.h"
 
 #define TASKS_COUNT 4u

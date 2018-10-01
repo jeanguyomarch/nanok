@@ -4,7 +4,7 @@
 #include "nanok/event.h"
 #include "nanok/scheduler.h"
 #include "nanok/syscall.h"
-#include "nanok/assert.h"
+#include <assert.h>
 
 static s_event _events_pool[16];
 static s_pool _pool = NK_POOL_INIT(_events_pool);
@@ -38,7 +38,7 @@ nk_event_free(s_event *event)
 KAPI void
 nk_event_trigger(s_event *event)
 {
-   NK_ASSERT(event->task != NULL);
+   assert(event->task != NULL);
    nk_scheduler_enqueue(event->task);
 }
 

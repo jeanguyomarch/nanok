@@ -4,8 +4,6 @@
 #include "nanok/init.h"
 #include "nanok/syscall.h"
 
-KSTUB_ASSERT_HANDLER();
-
 #define EVENT(Evt) \
   printf("%s: %s\n", __func__, Evt)
 

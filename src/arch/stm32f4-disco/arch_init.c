@@ -1,12 +1,12 @@
 /* NanoK - MIT License */
 
 #include "nanok/init.h"
-#include "nanok/assert.h"
 
 #include <stm32f4xx.h>
 #include <stm32f4xx_hal.h>
 
 #include <stdbool.h>
+#include <assert.h>
 
 /*
  * The system Clock is configured as follows:
@@ -49,10 +49,10 @@ _clock_init(void)
   RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV2;
   RCC_OscInitStruct.PLL.PLLQ = 7;
   if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
-    NK_ASSERT(false);
+    assert(false);
 
   if (HAL_PWREx_EnableOverDrive() != HAL_OK)
-    NK_ASSERT(false);
+    assert(false);
 
   /* Select PLL as system clock source and configure the HCLK, PCLK1 and PCLK2
    clocks dividers */
@@ -63,7 +63,7 @@ _clock_init(void)
   RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV4;
   RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV2;
   if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_5) != HAL_OK)
-    NK_ASSERT(false);
+    assert(false);
 }
 
 
