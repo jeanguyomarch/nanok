@@ -3,10 +3,6 @@
 #ifndef NANOK_COMPILER_H__
 #define NANOK_COMPILER_H__
 
-#include "arch/compiler.h"
-
-#include <stdnoreturn.h>
-
 #define __syscall__ __attribute__((always_inline)) static inline
 
 #define __weak__ __attribute__((weak))
