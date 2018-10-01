@@ -2,18 +2,8 @@
 #include <nanok/init.h>
 #include <nanok/log.h>
 #include <nanok/syscall.h>
-#include <nanok/assert.h>
 
 #include <stm32f429i_discovery.h>
-
-KAPI noreturn void
-nk_assert_fail(const char *filename __unused__,
-               unsigned long line __unused__,
-               const char *failure)
-{
-   arch_log_puts(failure);
-   for (;;) continue;
-}
 
 static volatile uint32_t _counter = UINT32_C(0);
 

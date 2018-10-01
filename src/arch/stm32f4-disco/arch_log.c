@@ -1,7 +1,6 @@
 /* NanoK - MIT License */
 
 #include "nanok/log.h"
-#include "nanok/assert.h"
 
 #include <stm32f429i_discovery_lcd.h>
 #include <string.h>

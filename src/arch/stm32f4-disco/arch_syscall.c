@@ -3,10 +3,10 @@
 #include "nanok/syscall.h"
 #include "nanok/task.h"
 #include "nanok/scheduler.h"
-#include "nanok/assert.h"
 #include "arch/exception_frame.h"
 
 #include <stm32f4xx_hal.h>
+#include <assert.h>
 
 #define __syscall_handler__ __attribute__((naked)) noreturn
 
@@ -38,7 +38,7 @@ static __syscall_handler__ void
 _syscall_run(void)
 {
    s_task *const first_task = nk_scheduler_schedule();
-   NK_ASSERT(first_task != NULL);
+   assert(first_task != NULL);
 
    const s_task_context *const ctx = &(first_task->context);
 
@@ -85,7 +85,7 @@ _syscall_terminate(void)
    nk_task_del(current_task);
 
    const s_task *const new_task = nk_scheduler_schedule();
-   NK_ASSERT(new_task != NULL);
+   assert(new_task != NULL);
    const s_task_context *const new_context = &(new_task->context);
 
    __set_PSP(new_context->psp);
@@ -114,6 +114,6 @@ SVC_Handler(void)
       [2] = _syscall_terminate,
       [3] = _syscall_await,
    };
-   NK_ASSERT(svc_id < ARRAY_SIZE(syscall));
+   assert(svc_id < ARRAY_SIZE(syscall));
    syscall[svc_id]();
 }

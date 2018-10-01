@@ -1,11 +1,9 @@
 /* NanoK - MIT License */
 
-#include "nanok/assert.h"
 #include "nanok/scheduler.h"
 #include "nanok/task.h"
 #include "nanok/syscall.h"
 #include "nanok/list.h"
-#include "nanok/assert.h"
 
 static s_task *_current_task = NULL;
 

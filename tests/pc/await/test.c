@@ -5,8 +5,6 @@
 #include "nanok/syscall.h"
 #include "nanok/event.h"
 
-KSTUB_ASSERT_HANDLER();
-
 static s_event *_prod_to_1;
 static s_event *_prod_to_2;
 static s_event *_prod_end_evt;

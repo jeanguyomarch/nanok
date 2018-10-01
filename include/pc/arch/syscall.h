@@ -5,10 +5,10 @@
 
 #include "nanok/task.h"
 #include "nanok/scheduler.h"
-#include "nanok/assert.h"
 #include "nanok/event.h"
 
 #include <stdlib.h>
+#include <assert.h>
 #include <ucontext.h>
 
 __syscall__ void nk_yield(void)
@@ -38,7 +38,7 @@ __syscall__ void nk_await(s_event *event)
 __syscall__ noreturn void nk_run(void)
 {
    s_task *const first_task = nk_scheduler_schedule();
-   NK_ASSERT(first_task != NULL);
+   assert(first_task != NULL);
 
    setcontext(&(first_task->context.uctx));
    __builtin_unreachable();
@@ -50,7 +50,7 @@ __syscall__ noreturn void nk_terminate(void)
    nk_task_del(current_task);
 
    const s_task *const new_task = nk_scheduler_schedule();
-   NK_ASSERT(new_task != NULL);
+   assert(new_task != NULL);
    setcontext(&(new_task->context.uctx));
    __builtin_unreachable();
 }

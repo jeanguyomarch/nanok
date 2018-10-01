@@ -2,9 +2,9 @@
 
 #include "nanok/task.h"
 #include "nanok/syscall.h"
-#include "nanok/assert.h"
 #include "nanok/log.h"
 
+#include <assert.h>
 #include <stdlib.h>
 
 static void
@@ -36,7 +36,7 @@ arch_task_setup(s_task *task)
    ctx->uc_stack.ss_size = _stack_size;
 
    const int ret = getcontext(ctx);
-   NK_ASSERT(ret == 0);
+   assert(ret == 0);
    makecontext(ctx, (void(*)()) _runner, 1, task->start);
 }
 

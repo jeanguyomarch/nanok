@@ -1,7 +1,6 @@
 /* NanoK - MIT License */
 
 #include "nanok/scheduler.h"
-#include "nanok/assert.h"
 #include "nanok/task.h"
 #include "nanok/event.h"
 #include "nanok/init.h"
