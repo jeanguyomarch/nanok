@@ -97,10 +97,29 @@ You can now drive the application:
    continue
 
 
+Development Workflow
+-------------------------------------------------------------------------------
+
+NanoK is hosted on `GitHub <https://github.com/jeanguyomarch/nanok>`_, and
+`git`_ is the source control management software used for its development.
+
+The branch ``master`` is the stable development branch. All work shall be done
+in branches. When a feature, bugfix or any other kind of modification to the
+sources of NanoK is ready, a `pull request
+<https://services.github.com/on-demand/github-cli/open-pull-request-github>`_
+shall be initiated with the ``master`` branch as being the destination. The
+commits will be rebased onto ``master`` and submitted to the `continuous
+integration server <https://travis-ci.org/jeanguyomarch/nanok>`_. Once all the
+tests pass, the pull request containing your changes will be rebased onto
+``master``.
+
+
 Coding Guidelines
 -------------------------------------------------------------------------------
 
 NanoK is written in C11 with GNU extensions.
+
+.. todo
 
 
 .. _hjson: https://pypi.org/project/hjson/
@@ -109,3 +128,4 @@ NanoK is written in C11 with GNU extensions.
 .. _gcc: https://www.gnu.org/software/gcc/
 .. _diff: https://www.gnu.org/software/diffutils/
 .. _st-link: https://github.com/texane/stlink.git
+.. _git: https://git-scm.com/
