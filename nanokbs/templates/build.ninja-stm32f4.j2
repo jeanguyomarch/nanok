@@ -1,6 +1,7 @@
 {%- extends "build.ninja.j2" %}
 
 {%- block rules %}
+{{ super() }}
 
 cflags = $
   -Wall -Wextra -Wshadow -Winit-self -Wfloat-equal -Wtrigraphs -Wconversion $
