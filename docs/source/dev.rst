@@ -84,7 +84,7 @@ because udev rules are distributed.
 Then, run the following to compile, flash and start to run the test application:
 
 .. code:: sh
-   
+
    ./scripts/gen-disco.sh
    ninja gdb-test-run
 
@@ -92,10 +92,15 @@ This will compile the application and uploaded through a GDB server interface.
 You can now drive the application:
 
 .. code:: gdb
-   
+
    load
    continue
 
+
+Coding Guidelines
+-------------------------------------------------------------------------------
+
+NanoK is written in C11 with GNU extensions.
 
 
 .. _hjson: https://pypi.org/project/hjson/

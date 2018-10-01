@@ -41,7 +41,13 @@ release = '0.0.1'
 extensions = [
     'sphinx.ext.todo',
     'sphinx.ext.imgmath',
+    'breathe',
 ]
+
+breathe_projects = {
+    "nanok": "../../docs/build/xml/",
+}
+breathe_default_project = 'nanok'
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']

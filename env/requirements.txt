@@ -1,3 +1,4 @@
+breathe
 hjson
 jinja2
 sphinx
