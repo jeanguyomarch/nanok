@@ -22,7 +22,7 @@ To build the documentation, you will need `sphinx`_ to be installed:
 
 .. code:: sh
 
-   pip install --user sphinx sphinx-autobuild sphinx_rtd_theme
+   pip install --user sphinx sphinx-autobuild sphinx_rtd_theme breathe
 
 
 Then, use ``docs/Makefile`` to produce the documentation in your favorite
