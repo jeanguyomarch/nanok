@@ -15,5 +15,6 @@ please visit :doc:`dev`.
    :caption: Documentation Contents
 
    intro
+   nanokbs
    dev
    unit
