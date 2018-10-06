@@ -29,18 +29,7 @@ What hardware does NanoK support?
 How to build NanoK?
 -------------------------------------------------------------------------------
 
-As stated earlier, NanoK must be compiled with the application that will run on
-the targeted hardware. As such, NanoK's build shall be driven by the
-application. Given this requirement, NanoK should not be built on its own. So,
-NanoK does not provide a build system out-of-the-box. This may seem shocking at
-first, but this allows an more in-depth integration with the application. Third
-parties will be able to tweak NanoK more easily.
-
-Instead, NanoK provides an exhaustive and comprehensive **description of its
-sources**, as well as a small (python3) script ``nanokbs`` that allows to
-generate a build sytem from an input template file. Third-parties will be able
-to write the template that better suit their needs. A basic `ninja`_ build
-template is provided by NanoK for its testing. It can be used as an example.
+Please refer to the :doc:`nanokbs` page.
 
 
 How to contribute to the development of NanoK?
@@ -51,4 +40,3 @@ Please refer to the :doc:`dev` page.
 
 .. _unikernel: https://en.wikipedia.org/wiki/Unikernel
 .. _STM32F4-DISCOVERY: https://www.st.com/en/evaluation-tools/stm32f4discovery.html
-.. _ninja: https://ninja-build.org
