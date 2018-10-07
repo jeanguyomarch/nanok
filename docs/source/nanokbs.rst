@@ -14,7 +14,7 @@ application. Third parties will be able to tweak NanoK more easily.
 
 Instead, NanoK provides an exhaustive and comprehensive **description of its
 sources**, as well as a small (python3) script ``nanokbs/nanokbs.py`` that
-allows to generate a build sytem from an input template file. Third-parties
+allows to generate a build system from an input template file. Third-parties
 will be able to write the template that better suit their needs. A basic
 `ninja`_ build template is provided by NanoK for its testing. It can be used as
 an example.

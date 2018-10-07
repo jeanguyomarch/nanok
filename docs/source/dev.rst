@@ -12,7 +12,7 @@ following to install the python dependencies for the current user:
 
 .. code:: sh
 
-   pip3 install --user env/requirements.txt
+   pip3 install --user -r env/requirements.txt
 
 Then, you need to install the following programs:
 
