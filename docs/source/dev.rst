@@ -89,9 +89,7 @@ Then, run the following to compile, flash and start to run the test application:
    ninja gdb-test-run
 
 This will compile the application and uploaded through a GDB server interface.
-You can now drive the application:
-
-.. code:: gdb
+You can now drive the application::
 
    load
    continue

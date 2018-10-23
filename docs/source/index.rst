@@ -16,5 +16,6 @@ please visit :doc:`dev`.
 
    intro
    nanokbs
+   design
    dev
    unit
