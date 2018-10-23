@@ -33,6 +33,7 @@ build check: phony |{% for product in app.products %} check-{{ product.name }}{%
 
 {%- block product %}
 build {{ product.name }}: phony $builddir/{{ product.name }}
+default {{ product.name }}
 {%- endblock %}
 
 {# EOF -- leave me here! Ninja WANTS to end its file with an EOL #}
