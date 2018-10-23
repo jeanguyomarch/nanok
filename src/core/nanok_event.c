@@ -26,6 +26,8 @@ nk_event_new(void)
 KAPI void
 nk_event_setup(s_event *event)
 {
+   /* An initialized event for now is bound to no task. This is mostly used for
+    * asserts to be thrown at this development stage. */
    event->task = NULL;
 }
 
@@ -36,9 +38,10 @@ nk_event_free(s_event *event)
 }
 
 KAPI void
-nk_event_trigger(s_event *event)
+nk_event_trigger(const s_event *event)
 {
    assert(event->task != NULL);
+   // TODO maybe assert that event is in await? What to do if not?!
    nk_scheduler_enqueue(event->task);
 }
 
