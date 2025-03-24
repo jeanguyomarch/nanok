@@ -41,6 +41,9 @@ build $builddir/{{ product.name }}: ld{% for obj in nanok_objects %} {{ obj }}{%
 build $builddir/{{ product.name }}.bin: objcopy $builddir/{{ product.name }}
 
 build {{ product.name }}: phony $builddir/{{ product.name }}.bin
+
+build flash-{{ product.name }}: flash $builddir/{{ product.name }}.bin
+build gdb-{{ product.name }}: gdb $builddir/{{ product.name }}
 {%- endblock %}
 
 {%- endfor %}

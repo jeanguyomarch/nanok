@@ -21,6 +21,7 @@ static void
 _task2(void)
 {
    for (;;) {
+
       if (_counter % 200000 == 0)
       {
          arch_log_puts("Toggle led");

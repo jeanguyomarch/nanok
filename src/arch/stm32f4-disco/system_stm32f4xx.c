@@ -139,7 +139,7 @@
                variable is updated automatically.
   */
   uint32_t SystemCoreClock = 16000000;
-static const uint8_t AHBPrescTable[16] = {0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 3, 4, 6, 7, 8, 9};
+const uint8_t AHBPrescTable[16] = {0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 3, 4, 6, 7, 8, 9};
 
 /**
   * @}
@@ -298,7 +298,7 @@ void SystemCoreClockUpdate(void)
   * @param  None
   * @retval None
   */
-static void SystemInit_ExtMemCtl(void)
+void SystemInit_ExtMemCtl(void)
 {
   __IO uint32_t tmp = 0x00;
 #if defined(STM32F427xx) || defined(STM32F437xx) || defined(STM32F429xx) || defined(STM32F439xx)\

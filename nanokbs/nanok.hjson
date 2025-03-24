@@ -26,12 +26,13 @@
          path: "src/arch/stm32f4-disco"
          arch: "stm32f4-disco"
          c_sources: [
-            "arch_bsp.c",
             "arch_init.c",
             "arch_interrupts.c",
             "arch_log.c",
             "arch_syscall.c",
-            "arch_task.c"
+            "arch_task.c",
+            "stm32f4xx_hal_msp.c",
+            "system_stm32f4xx.c",
          ],
          asm_sources: [
             "start.S"
@@ -120,6 +121,8 @@
             "stm32f429i_discovery_eeprom.c",
             "stm32f429i_discovery_io.c",
             "stm32f429i_discovery_sdram.c",
+            "stm32f429i_discovery_gyroscope.c",
+            "stm32f429i_discovery_ts.c",
             "stm32f429i_discovery_lcd.c"
          ]
          third_party: true

@@ -4,6 +4,7 @@
 #include "nanok/syscall.h"
 #include "nanok/task.h"
 #include "arch/exception_frame.h"
+#include <assert.h>
 
 /* Return to Thread mode, exception return uses non-floating-point state from
  * the PSP and execution uses PSP after return */
@@ -11,8 +12,7 @@
 
 /* This function is automatically called when a task returns from its entry
  * point */
-__attribute__((naked)) static void
-_task_return_cb(void)
+static void _task_return_cb(void)
 {
   nk_terminate();
 }
@@ -25,8 +25,6 @@ arch_task_setup(s_task *task)
     * by the Cortex-m4 processor model.
     *
     * +-----------------------------+ <--- stack top       HIGH ADDR
-    * | Task Start                  |
-    * +-----------------------------+
     * | {alignment}                 |
     * +-----------------------------+
     * | xPSR                        |
@@ -51,7 +49,11 @@ arch_task_setup(s_task *task)
 
    /* Get the top of the task */
    uint32_t *const stack = task->stack;
-   uint32_t *const stack_top = &(stack[task->stack_size / sizeof(uint32_t)]);
+   uint32_t stack_top = (uint32_t)(&(stack[task->stack_size / sizeof(uint32_t)]));
+   // TODO - stacks must be aligned on 8 bytes.
+   stack_top &= 0xFFFFFFF8;
+
+   assert(stack_top % 8 == 0);
 
    /* PSP: program stack pointer, starting from the top of the task. From the
     * PSP we reserve the room to hold the exception frame. It is naturally

@@ -7,20 +7,25 @@ cflags = $
   -Wall -Wextra -Wshadow -Winit-self -Wfloat-equal -Wtrigraphs -Wconversion $
   -Wlogical-op -Wunsafe-loop-optimizations -Wdouble-promotion -Wformat=2 $
   -fomit-frame-pointer -ffreestanding -nostdlib -std=gnu11 -mcpu=cortex-m4 $
-  -mthumb -mfloat-abi=softfp -mfpu=fpv4-sp-d16 -march=armv7e-m
+  -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -march=armv7e-m
 {%- if app.debug %} -ggdb -O0 -g3 {%- endif %}
 
-asflags =
+asflags = $
+  -mthumb -mcpu=cortex-m4 -march=armv7e-m -mfloat-abi=hard -mfpu=fpv4-sp-d16
 
 ldflags =                       $
   -specs=nosys.specs            $
   -Wl,--gc-sections             $
-  -mcpu=cortex-m4
+  -mcpu=cortex-m4 $
+  -march=armv7e-m $
+  -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16
 
 cppflags =                      $
   -I {{ nanok.dir }}/include    $
   -I {{ nanok.dir }}/include/{{ app.arch }} $
   -DSTM32F429xx                 $
+  -DUSE_HAL_DRIVER              $
+  -D__FPU_PRESENT               $
   -isystem {{ nanok.dir }}/lib/stm32/STM32F4xx_HAL_Driver/Inc $
   -isystem {{ nanok.dir }}/lib/stm32/CMSIS/Device/ST/STM32F4xx/Include $
   -isystem {{ nanok.dir }}/lib/stm32/CMSIS/Include $

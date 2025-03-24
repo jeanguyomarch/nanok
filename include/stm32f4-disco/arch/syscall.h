@@ -8,9 +8,9 @@
 __syscall__ void nk_yield(void)
 {
    asm volatile(
-      "cpsie i\n"
+      /*"cpsie i\n"*/
       "svc 0\n"
-      "cpsid i\n"
+      /*"cpsid i\n"*/
       :
       :
       : "memory", "r4", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12"
@@ -20,7 +20,7 @@ __syscall__ void nk_yield(void)
 __syscall__ noreturn void nk_run(void)
 {
    asm volatile(
-      "cpsie i\n"
+      /*"cpsie i\n"*/
       "svc 1\n"
       :
       :
@@ -32,7 +32,7 @@ __syscall__ noreturn void nk_run(void)
 __syscall__ noreturn void nk_terminate(void)
 {
    asm volatile(
-      "cpsie i\n"
+      /*"cpsie i\n"*/
       "svc 2\n"
       :
       :
@@ -48,7 +48,7 @@ __syscall__ void nk_await(s_event *event)
 
    __sync_synchronize(); /* Do not re-organize instructions from here */
    asm volatile(
-      "cpsie i\n"
+      /*"cpsie i\n"*/
       "svc 3\n"
       :
       :
